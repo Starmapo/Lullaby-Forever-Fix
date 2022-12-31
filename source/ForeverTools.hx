@@ -70,7 +70,7 @@ class ForeverTools
 
 	public static function optimizeImages()
 	{
-		var parent = 'C:/Users/fabia/Downloads/!FNF/Lullaby-Forever-Fix';
+		var parent = '';
 		var directories = [
 			"assets/images/menus",
 			"assets/images/shop",
