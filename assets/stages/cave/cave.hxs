@@ -96,8 +96,9 @@ function onEvent(eventName) {
 			new FlxTimer().start(1.5, function(tmr:FlxTimer)
 				{				
 					PlayState.instance.flipHealthbar();
-					PlayState.instance.lcBar2();		
-					PlayState.instance.pendulum.alpha = 1;
+					PlayState.instance.lcBar2();
+					if (PlayState.instance.pendulum != null)
+						PlayState.instance.pendulum.alpha = 1;
 					PlayState.instance.camZooming = true;						
 					FlxTween.tween(PlayState.camHUD, {alpha: 1}, 0.2);	
 					FlxTween.tween(PlayState.uiHUD, {alpha: 1}, 0.2);

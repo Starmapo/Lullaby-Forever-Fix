@@ -110,10 +110,12 @@ function onCreate() {
     staticOverlay.animation.play('idle');
 
     // set up the distortion
-    glitchPincushion = new FlxGraphicsShader("", Paths.shader('pincushion'));
-	background.shader = glitchPincushion;
-    background2.shader = glitchPincushion;
-    glitchPincushion.data.distort.value = [1.5];
+    if (Init.trueSettings.get('Shaders')) {
+        glitchPincushion = new FlxGraphicsShader("", Paths.shader('pincushion'));
+        background.shader = glitchPincushion;
+        background2.shader = glitchPincushion;
+        glitchPincushion.data.distort.value = [1.5];
+    }
 
     questionareWiggles = new FlxSprite();
     questionareWiggles.frames = Paths.getSparrowAtlas('wiggles_questionare');
@@ -189,8 +191,10 @@ function onUpdate(elapsed) {
     else
         PlayState.boyfriend.x -= (elapsed / (1 / 60)) * 16;
 
-    glitchPincushion.data.prob.value = [intensity];
-    glitchPincushion.data.time.value = [Conductor.songPosition / (Conductor.stepCrochet * 8)];
+    if (glitchPincushion != null) {
+        glitchPincushion.data.prob.value = [intensity];
+        glitchPincushion.data.time.value = [Conductor.songPosition / (Conductor.stepCrochet * 8)];
+    }
 
     var curStep = Std.int(Conductor.songPosition / Conductor.stepCrochet);
     if (curStep < 32 && curStep > 0) 

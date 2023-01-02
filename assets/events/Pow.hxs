@@ -5,32 +5,34 @@ function returnDescription()
     return 'Makes MX hit the pow block\nReversing the scroll direction.';
 
 function eventFunction(params) {
-    startReverse = 0;
-    doReverse = false;
-    var him:Boyfriend = PlayState.instance.mx;
-    PlayState.instance.mxMechanic = true;
-    if (him != null) {
-        if (PlayState.playerLane == 0) { 
-            // dont fucking do that!!!!
-            dispose();
-        } else {
-            var hand:Boyfriend = PlayState.instance.mxHand;
-            him.playAnim("hit1");
-            hand.playAnim("hit1");
-            FlxG.sound.play(Paths.sound('HandUp'));
-            him.animation.finishCallback = function(name:String) {
-                dropStart();
-                him.playAnim("hit2");
-                hand.playAnim("hit2");
-                him.animation.finishCallback = function(names:String) {
-                    him.animation.finishCallback = null;
-                    him.playAnim("idle");
-                    hand.playAnim("idle");
-                }
-            }
-        }
-    } else 
-        dropStart();
+	if (PlayState.gameplayMode != 'PUSSY_MODE') {
+		startReverse = 0;
+		doReverse = false;
+		var him:Boyfriend = PlayState.instance.mx;
+		PlayState.instance.mxMechanic = true;
+		if (him != null) {
+			if (PlayState.playerLane == 0) { 
+				// dont fucking do that!!!!
+				dispose();
+			} else {
+				var hand:Boyfriend = PlayState.instance.mxHand;
+				him.playAnim("hit1");
+				hand.playAnim("hit1");
+				FlxG.sound.play(Paths.sound('HandUp'));
+				him.animation.finishCallback = function(name:String) {
+					dropStart();
+					him.playAnim("hit2");
+					hand.playAnim("hit2");
+					him.animation.finishCallback = function(names:String) {
+						him.animation.finishCallback = null;
+						him.playAnim("idle");
+						hand.playAnim("idle");
+					}
+				}
+			}
+		} else 
+			dropStart();
+	}
 }
 
 function dropStart() {

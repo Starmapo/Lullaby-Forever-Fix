@@ -3,11 +3,14 @@ function eventFunction(params) {
     var newGlitch = params[0] / 4;
     if (Math.isNaN(newGlitch))
         newGlitch = 0;
-    PlayState.dadOpponent.shader.data.binaryIntensity.value = [newGlitch];
+    if (PlayState.dadOpponent.shader != null)
+        PlayState.dadOpponent.shader.data.binaryIntensity.value = [newGlitch];
 }
 
 function initFunction(params) {
-    oppGlitchShader = new FlxGraphicsShader("", Paths.shader('missingno/individualGlitches'));
-    PlayState.dadOpponent.shader = oppGlitchShader;
-    PlayState.dadOpponent.shader.data.binaryIntensity.value = [0];
+    if (Init.trueSettings.get('Shaders')) {
+        oppGlitchShader = new FlxGraphicsShader("", Paths.shader('missingno/individualGlitches'));
+        PlayState.dadOpponent.shader = oppGlitchShader;
+        PlayState.dadOpponent.shader.data.binaryIntensity.value = [0];
+    }
 }

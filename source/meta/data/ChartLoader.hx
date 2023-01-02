@@ -34,44 +34,51 @@ class ChartLoader
 				// load fnf style charts (PRE 2.8)
 				var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 				var eventCount:Int = 0;
-				for (section in noteData) {
+				for (section in noteData)
+				{
 					var coolSection:Int = Std.int(section.lengthInSteps / 4);
 
 					for (songNotes in section.sectionNotes)
 					{
 						var daStrumTime:Float = songNotes[0] - Init.trueSettings['Offset']; // - | late, + | early
-						switch (songNotes[1]) {
+						switch (songNotes[1])
+						{
 							default:
-								if (PlayState.bronzongMechanic && songNotes[1] == 8) {
-									var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, 4, 2, 0);
-									swagNote.noteSpeed = songData.speed;
-	
-									swagNote.lane = PlayState.playerLane;
-									swagNote.sustainLength = songNotes[2];
-									swagNote.scrollFactor.set(0, 0);
-	
-									var susLength:Float = swagNote.sustainLength;
-									susLength = susLength / Conductor.stepCrochet;
-									unspawnNotes.push(swagNote);
-	
-									var oldNote:Note;
-									if (unspawnNotes.length > 0)
-										oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-									else 
-										oldNote = null;
-									
-									for (susNote in 0...Math.floor(susLength))
+								if (songNotes[1] == 8)
+								{
+									if (PlayState.bronzongMechanic)
 									{
-										oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-										var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
-											daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, 4, 2, 0, true,
-											oldNote);
-										sustainNote.scrollFactor.set();
-										sustainNote.lane = swagNote.lane;
-	
-										unspawnNotes.push(sustainNote);
+										var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, 4, 2, 0);
+										swagNote.noteSpeed = songData.speed;
+
+										swagNote.lane = PlayState.playerLane;
+										swagNote.sustainLength = songNotes[2];
+										swagNote.scrollFactor.set(0, 0);
+
+										var susLength:Float = swagNote.sustainLength;
+										susLength = susLength / Conductor.stepCrochet;
+										unspawnNotes.push(swagNote);
+
+										var oldNote:Note;
+										if (unspawnNotes.length > 0)
+											oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
+										else
+											oldNote = null;
+
+										for (susNote in 0...Math.floor(susLength))
+										{
+											oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
+											var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
+												daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, 4, 2, 0, true, oldNote);
+											sustainNote.scrollFactor.set();
+											sustainNote.lane = swagNote.lane;
+
+											unspawnNotes.push(sustainNote);
+										}
 									}
-								} else {
+								}
+								else
+								{
 									var daNoteData:Int = Std.int(songNotes[1] % PlayState.numberOfKeys);
 									var daNoteAlt:Float = 0;
 									if (songNotes.length > 2)
@@ -86,7 +93,7 @@ class ChartLoader
 										oldNote = null;
 
 									if (songData.song.toLowerCase() == 'sansno')
-										daNoteData = FlxG.random.int(0,3);
+										daNoteData = FlxG.random.int(0, 3);
 
 									// create the new note
 									var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, daNoteData, daNoteType, daNoteAlt);
@@ -96,11 +103,11 @@ class ChartLoader
 									var gottaHitNote:Bool = section.mustHitSection;
 									if (songNotes[1] >= PlayState.numberOfKeys)
 										gottaHitNote = !section.mustHitSection;
-									
+
 									swagNote.lane = Std.int(Math.max(Math.floor(songNotes[1] / PlayState.numberOfKeys), 0));
 									if (!songData.threeLanes) // backwards compat
 										swagNote.lane = gottaHitNote ? 1 : 0;
-										
+
 									// set the note's length (sustain note)
 									swagNote.sustainLength = songNotes[2];
 									swagNote.scrollFactor.set(0, 0);
@@ -116,7 +123,8 @@ class ChartLoader
 									{
 										oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 										var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
-											daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteType, daNoteAlt, true, oldNote);
+											daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, daNoteType, daNoteAlt, true,
+											oldNote);
 										sustainNote.scrollFactor.set();
 										sustainNote.lane = swagNote.lane;
 
@@ -126,7 +134,6 @@ class ChartLoader
 							case -1:
 								pushEvent(songNotes, PlayState.eventList);
 						}
-							
 					}
 					daBeats += 1;
 				}
@@ -140,15 +147,16 @@ class ChartLoader
 				of the main game so it feels like loading things in works well.
 			 */
 			case 'forever':
-				/*
-					That being said, however, we also have forever charts, which are complete restructures with new custom features and such.
-					Will be useful for projects later on, and it will give you more control over things you can do with the chart and with the game.
-					I'll also make it really easy to convert charts, you'll just have to load them in and pick an export option! If you want to play
-					songs made in forever engine with the base game then you can do that too.
-				 */
+			/*
+				That being said, however, we also have forever charts, which are complete restructures with new custom features and such.
+				Will be useful for projects later on, and it will give you more control over things you can do with the chart and with the game.
+				I'll also make it really easy to convert charts, you'll just have to load them in and pick an export option! If you want to play
+				songs made in forever engine with the base game then you can do that too.
+			 */
 			case 'event':
 				var eventList:Array<PlacedEvent> = [];
-				for (section in noteData) {
+				for (section in noteData)
+				{
 					for (songNotes in section.sectionNotes)
 						pushEvent(songNotes, eventList);
 				}
@@ -158,11 +166,12 @@ class ChartLoader
 		return unspawnNotes;
 	}
 
-
-	public static function pushEvent(note:Array<Dynamic>, myEventList:Array<PlacedEvent>) {
+	public static function pushEvent(note:Array<Dynamic>, myEventList:Array<PlacedEvent>)
+	{
 		var daStrumTime:Float = note[0] - Init.trueSettings['Offset']; // - | late, + | early
 		// event notes
-		if (Events.eventList.contains(note[2])) {
+		if (Events.eventList.contains(note[2]))
+		{
 			var mySelectedEvent:String = Events.eventList[Events.eventList.indexOf(note[2])];
 			if (mySelectedEvent != null)
 			{
@@ -171,7 +180,7 @@ class ChartLoader
 				var delay:Float = 0;
 				if (module.exists("returnDelay"))
 					delay = module.get("returnDelay")();
-				// 
+				//
 				var myEvent:PlacedEvent = {
 					timestamp: daStrumTime + (delay * Conductor.stepCrochet),
 					params: [note[3], note[4]],

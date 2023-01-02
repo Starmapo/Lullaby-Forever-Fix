@@ -319,8 +319,10 @@ function onEvent(eventName) {
 			freakachuActive = false;
 			//blackScreenCover.visible = true;
 
-			aberrationShader = new ShaderFilter(new GraphicsShader("", Paths.shader('aberration')));
-			PlayState.dialogueHUD.setFilters([aberrationShader]);
+			if (Init.trueSettings.get('Shaders')) {
+				aberrationShader = new ShaderFilter(new GraphicsShader("", Paths.shader('aberration')));
+				PlayState.dialogueHUD.setFilters([aberrationShader]);
+			}
 
 			new FlxTimer().start(10.12, function(tmr:FlxTimer)
 				{

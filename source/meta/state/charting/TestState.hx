@@ -45,9 +45,11 @@ class TestState extends MusicBeatState
 		var songMusic:FlxSound = new FlxSound().loadEmbedded(Paths.inst('isotope', false), false, true);
 		FlxG.sound.list.add(songMusic);
 
-		var visualiser:FlxGraphicsShader = new FlxGraphicsShader('', Paths.shader('visualizer'));
 		var falseGraphic:FlxSprite = new FlxSprite().makeGraphic(1280, 720);
-		falseGraphic.shader = visualiser;
+		if (Init.trueSettings.get('Shaders')) {
+			var visualiser:FlxGraphicsShader = new FlxGraphicsShader('', Paths.shader('visualizer'));
+			falseGraphic.shader = visualiser;
+		}
 		add(falseGraphic);
 		// FlxG.camera.setFilters();
 	}

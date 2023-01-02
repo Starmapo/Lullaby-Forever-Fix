@@ -224,6 +224,11 @@ class ClassHUD extends FlxSpriteGroup
 		// update playstate
 		PlayState.detailsSub = scoreBar.text + accuracyBar.text;
 		PlayState.updateRPC(false);
+
+		switch (Init.trueSettings.get('FC Mode')) {
+			case 'fc':
+				
+		}
 	}
 
 }

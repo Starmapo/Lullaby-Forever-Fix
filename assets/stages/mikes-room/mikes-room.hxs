@@ -88,6 +88,7 @@ function onCreatePost() {
 			PlayState.instance.boyfriendStrums.receptors.members[i].visible = false;
 		}
 
+	trace('making steven bed');
 	//STEVEN (BED)
 	stevenbed = new Character().setCharacter(0, 0, 'steven-bed');
 	stevenbed.setCharacter(dadOpponent.x - 150 + dadXOffset, dadOpponent.y + 650 + dadYOffset, 'steven-bed');
@@ -103,8 +104,9 @@ function onCreatePost() {
 	add(lacama);
 	add(laalmuada);
 
+	trace('making mike bed');
 	mikeBed = new Boyfriend(); //reminding myself to fix mike for tomorrow
-	mikeBed.setCharacter(boyfriend.x + 310, boyfriend.y + 775, 'mike-bed2');
+	mikeBed.setCharacter(boyfriend.x + 310, boyfriend.y + 775, 'mike-bed');
 	add(mikeBed);
 	mikeBed.atlasCharacter.visible = false;
 
@@ -113,6 +115,7 @@ function onCreatePost() {
 	PlayState.instance.boyfriendStrums.character.push(mikeBed);
 	PlayState.instance.boyfriendStrums.singingCharacters = [mikeBed];
 
+	trace('making mike strangle');
 	//MIKE (STRANGLE FP)
 	mikefp = new Boyfriend().setCharacter(0, 0, 'mike-fp');
 	mikefp.setCharacter(boyfriend.x + 175, boyfriend.y + 495, 'mike-fp');
@@ -125,6 +128,7 @@ function onCreatePost() {
 	mikefp.antialiasing = true;
 	mikefp.playAnim('idle');
 
+	trace('making steven strangle');
 	//STEVEN (STRANGLE FP)
 	stevenfp = new Character().setCharacter(0, 0, 'steven-fp');
 	stevenfp.setCharacter(dadOpponent.x - 400 + dadXOffset, dadOpponent.y + 900 + dadYOffset, 'steven-front');
@@ -137,6 +141,7 @@ function onCreatePost() {
 	stevenfp.antialiasing = true;
 	stevenfp.playAnim('idle');
 
+	trace('making steven center');
 	//STEVEN (CENTER FP)
 	stevenstrangle = new Character().setCharacter(0, 0, 'steven-fp');
 	stevenstrangle.setCharacter(dadOpponent.x + dadXOffset, dadOpponent.y + 900 + dadYOffset, 'steven-fp');
@@ -169,6 +174,7 @@ function onEvent(eventName) {
 			cameraTweenStuff(-0.3, 5.0);
 
 		case 'Mike Change Scene':
+			trace('doing this');
 			FlxG.camera.zoom += 2.5;
 			background.visible = true;
 			portrait.visible = true;
@@ -177,6 +183,7 @@ function onEvent(eventName) {
 			stevenfp.visible = false;
 			mikeBed.atlasCharacter.visible = true;
 			PlayState.instance.iconP1.visible = true;
+			trace('freaking epic');
 			for (i in 0...PlayState.instance.boyfriendStrums.receptors.members.length)
 				{
 					PlayState.instance.boyfriendStrums.receptors.members[i].visible = true;

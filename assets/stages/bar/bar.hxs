@@ -236,10 +236,12 @@ function onCreate() {
 	chair.scrollFactor.set(0.9, 0.9);
 	// add(chair);
 
-	//filmGrain = new ShaderFilter(new GraphicsShader("", Paths.shader('filmgrain')));
-	//PlayState.camGame.setFilters([filmGrain]);
-	filmGrain = new ShaderFilter(new GraphicsShader("", Paths.shader('old')));
-	PlayState.camGame.setFilters([filmGrain]);
+	if (Init.trueSettings.get('Shaders')) {
+		//filmGrain = new ShaderFilter(new GraphicsShader("", Paths.shader('filmgrain')));
+		//PlayState.camGame.setFilters([filmGrain]);
+		filmGrain = new ShaderFilter(new GraphicsShader("", Paths.shader('old')));
+		PlayState.camGame.setFilters([filmGrain]);
+	}
 }
 
 function onCreatePost() {
@@ -258,7 +260,8 @@ function onBeat(beat) {
 }
 
 function onUpdate(elapsed) {
-	filmGrain.shader.data.iTime.value = [Conductor.songPosition / 1000];
+	if (filmGrain != null)
+		filmGrain.shader.data.iTime.value = [Conductor.songPosition / 1000];
 	
 	var swagRect = FlxRect.weak(0, 0, saled.width, saled.height - 16);
 	saled.clipRect = swagRect;

@@ -28,8 +28,10 @@ class PastaNightSelect extends MusicBeatSubState {
 		selectCam = new FlxCamera(0, 0, 768, 672);
 		FlxG.cameras.reset(selectCam);
 		
-		crt = new ShaderFilter(new GraphicsShader("", Paths.shader('crt')));
-		selectCam.setFilters([crt]);
+		if (Init.trueSettings.get('Shaders')) {
+			crt = new ShaderFilter(new GraphicsShader("", Paths.shader('crt')));
+			selectCam.setFilters([crt]);
+		}
 		// lmao
 		selectCam.x += (FlxG.width / 2 - selectCam.width / 2);
 		selectCam.y += (FlxG.height / 2 - selectCam.height / 2);

@@ -67,6 +67,8 @@ class OptionsMenuState extends MusicBeatState
 					['Ghost Tapping', getFromOption],
 					['Display Accuracy', getFromOption],
 					['Skip Text', getFromOption],
+					['FC Mode', getFromOption],
+					['Pendulum FC', getFromOption],
 					['', null],
 					['Meta Settings', null],
 					['', null],
@@ -74,14 +76,14 @@ class OptionsMenuState extends MusicBeatState
 					['FPS Counter', getFromOption],
 					['Memory Counter', getFromOption],
 					['Debug Info', getFromOption],
-					['Mechanics', getFromOption],
+					['Mechanics', getFromOption]
 				]
 			],
 			'appearance' => [
 				[
 					['Judgements', null],
 					['', null],
-					['Fixed Judgements', getFromOption], 
+					['Fixed Judgements', getFromOption],
 					['Simply Judgements', getFromOption],
 					['Counter', getFromOption],
 					['', null],
@@ -96,6 +98,7 @@ class OptionsMenuState extends MusicBeatState
 					['Accessibility Settings', null],
 					['', null],
 					['Flashing Lights', getFromOption],
+					['Shaders', getFromOption],
 					['Filter', getFromOption],
 					['Disable Antialiasing', getFromOption],
 					["Stage Opacity", getFromOption],
@@ -215,7 +218,8 @@ class OptionsMenuState extends MusicBeatState
 			activeSubgroup.members[i].xTo = 200 + ((i - curSelection) * 25);
 
 			// check for null members and hardcode the dividers
-			if (categoryMap.get(curCategory)[0][i][1] == null) {
+			if (categoryMap.get(curCategory)[0][i][1] == null)
+			{
 				activeSubgroup.members[i].alpha = 1;
 				activeSubgroup.members[i].xTo += Std.int((FlxG.width / 2) - ((activeSubgroup.members[i].text.length / 2) * 40)) - 200;
 			}
@@ -400,7 +404,7 @@ class OptionsMenuState extends MusicBeatState
 					case Init.SettingTypes.Selector:
 						// selector
 						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4],
-							(letter.text == 'Framerate Cap') ? true : false, (letter.text == 'Stage Opacity') ? true : false);
+							(letter.text == 'Framerate Cap'), (letter.text == 'Stage Opacity'));
 
 						extrasMap.set(letter, selector);
 					default:
@@ -461,7 +465,8 @@ class OptionsMenuState extends MusicBeatState
 		}
 	}
 
-	function updateCheckmark(checkmark:FNFSprite, animation:Bool) {
+	function updateCheckmark(checkmark:FNFSprite, animation:Bool)
+	{
 		if (checkmark != null)
 			checkmark.playAnim(Std.string(animation));
 	}
@@ -520,17 +525,18 @@ class OptionsMenuState extends MusicBeatState
 			Init.saveSettings();
 		}
 		else if (!fps && !bgdark)
-		{ 
+		{
 			// get the current option as a number
 			var storedNumber:Int = 0;
 			var newSelection:Int = storedNumber;
-			if (selector.options != null) {
+			if (selector.options != null)
+			{
 				for (curOption in 0...selector.options.length)
 				{
 					if (selector.options[curOption] == selector.optionChosen.text)
 						storedNumber = curOption;
 				}
-				
+
 				newSelection = storedNumber + updateBy;
 				if (newSelection < 0)
 					newSelection = selector.options.length - 1;

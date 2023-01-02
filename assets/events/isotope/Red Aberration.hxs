@@ -12,8 +12,10 @@ function eventFunction(params) {
     if (Math.isNaN(newStart))
         newStart = 1;
     intensity = newIntensity;
-    oppGlitchShader.data.intensity.value = [newIntensity];
-    oppGlitchShader.data.inital.value = [newStart];
+    if (oppGlitchShader != null) {
+        oppGlitchShader.data.intensity.value = [newIntensity];
+        oppGlitchShader.data.inital.value = [newStart];
+    }
 }
 
 function onUpdate(elapsed) {
@@ -21,33 +23,39 @@ function onUpdate(elapsed) {
     //
     falseIntensity = FlxMath.lerp( falseIntensity, 0, elapsed * 2 );
     // trace(falseIntensity);
-    oppGlitchShader.data.intensity.value = [falseIntensity];
-    glitchEffect.shader.data.prob.value = [0.75];
-    glitchEffect.shader.data.time.value = [Conductor.songPosition / (Conductor.stepCrochet * 16)];
+    if (oppGlitchShader != null)
+        oppGlitchShader.data.intensity.value = [falseIntensity];
+    if (glitchEffect != null) {
+        glitchEffect.shader.data.prob.value = [0.75];
+        glitchEffect.shader.data.time.value = [Conductor.songPosition / (Conductor.stepCrochet * 16)];
+    }
     if (oldStep != newStep && newStep > oldStep) {
         // trace('the bumper');
         falseIntensity = intensity;
-        oppGlitchShader.data.intensity.value = [falseIntensity];
+        if (oppGlitchShader != null)
+            oppGlitchShader.data.intensity.value = [falseIntensity];
         oldStep = newStep;
     }
 }
 
 function initFunction(params) {
-    if (PlayState.staticValues.get('glitchySet') == null) {
-        oppGlitchShader = new FlxGraphicsShader("", Paths.shader('isotope/redAberration'));
-        trace('its happening?? idk');
-		PlayState.dadOpponent.shader = oppGlitchShader;
-        oppGlitchShader.data.time.value = [0];
-        oppGlitchShader.data.intensity.value = [0];
-        PlayState.staticValues.set('glitchySet', true);
-    }
+    if (Init.trueSettings.get('Shaders')) {
+        if (PlayState.staticValues.get('glitchySet') == null) {
+            oppGlitchShader = new FlxGraphicsShader("", Paths.shader('isotope/redAberration'));
+            trace('its happening?? idk');
+            PlayState.dadOpponent.shader = oppGlitchShader;
+            oppGlitchShader.data.time.value = [0];
+            oppGlitchShader.data.intensity.value = [0];
+            PlayState.staticValues.set('glitchySet', true);
+        }
 
-    if (PlayState.staticValues.get('vignetteSet') == null) {
-        glitchEffect = new ShaderFilter(new GraphicsShader("", Paths.shader('isotope/vignetteGlitch')));
-        PlayState.camGame.setFilters([glitchEffect]);
-        glitchEffect.shader.data.time.value = [0.0];
-        glitchEffect.shader.data.prob.value = [0.0];
-        glitchEffect.shader.data.vignetteIntensity.value = [0.5];
-        PlayState.staticValues.set('vignetteSet', true);
+        if (PlayState.staticValues.get('vignetteSet') == null) {
+            glitchEffect = new ShaderFilter(new GraphicsShader("", Paths.shader('isotope/vignetteGlitch')));
+            PlayState.camGame.setFilters([glitchEffect]);
+            glitchEffect.shader.data.time.value = [0.0];
+            glitchEffect.shader.data.prob.value = [0.0];
+            glitchEffect.shader.data.vignetteIntensity.value = [0.5];
+            PlayState.staticValues.set('vignetteSet', true);
+        }
     }
 }

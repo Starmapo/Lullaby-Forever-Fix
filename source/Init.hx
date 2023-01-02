@@ -140,9 +140,9 @@ class Init extends FlxState
 		'Mechanics' => [
 			'normal',
 			Selector,
-			'Choose the diffiuclty of the mechanics. (MAY NOT APPLY TO ALL SONGS)',
+			'Choose the difficulty of the mechanics.',
 			NOT_FORCED,
-			['pussy', 'normal', 'hell']
+			['pussy', 'normal']
 		],
 		"Clip Style" => [
 			'stepmania',
@@ -199,6 +199,25 @@ class Init extends FlxState
 			"Simplifies the judgement animations, displaying only one judgement / rating sprite at a time.",
 			NOT_FORCED
 		],
+		'Shaders' => [
+			true,
+			Checkmark,
+			'Whether shaders should be enabled. If your game is lagging, try disabling them.',
+			NOT_FORCED
+		],
+		'FC Mode' => [
+			'none',
+			Selector,
+			"If you select one and drop below this ranking, you must restart.",
+			NOT_FORCED,
+			['none', 'fc', 'gfc', 'sfc']
+		],
+		'Pendulum FC' => [
+			false,
+			Checkmark,
+			'When enabled, you must restart if you fail to hit the pendulum.',
+			NOT_FORCED
+		]
 	];
 
 	public static var trueSettings:Map<String, Dynamic> = [];

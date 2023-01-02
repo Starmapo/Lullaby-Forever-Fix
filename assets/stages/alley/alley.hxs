@@ -118,15 +118,17 @@ function onCreatePost() {
 			FlxG.mouse.useSystemCursor = true;
 		}
 
-	hypnoGuide = new FlxSprite(530, 370);
-	hypnoGuide.frames = Paths.getSparrowAtlas('UI/base/hypno/Extras');
-	hypnoGuide.animation.addByPrefix('press', 'Spacebar', 24, false);
-	hypnoGuide.animation.play('press');
-	hypnoGuide.updateHitbox();
-	hypnoGuide.antialiasing = true;
-	add(hypnoGuide);
-	hypnoGuide.cameras = [PlayState.camHUD];
-	hypnoGuide.alpha = 0.0001;
+	if (PlayState.gameplayMode != 'PUSSY_MODE') {
+		hypnoGuide = new FlxSprite(530, 370);
+		hypnoGuide.frames = Paths.getSparrowAtlas('UI/base/hypno/Extras');
+		hypnoGuide.animation.addByPrefix('press', 'Spacebar', 24, false);
+		hypnoGuide.animation.play('press');
+		hypnoGuide.updateHitbox();
+		hypnoGuide.antialiasing = true;
+		add(hypnoGuide);
+		hypnoGuide.cameras = [PlayState.camHUD];
+		hypnoGuide.alpha = 0.0001;
+	}
 }
 
 function onBeat(beat) {

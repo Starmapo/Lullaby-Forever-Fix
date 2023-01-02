@@ -330,6 +330,7 @@ class PlayState extends MusicBeatState
 	// stores the last combo objects in an array
 	public static var lastCombo:Array<FlxSprite>;
 	public static var gameplayMode:String = NORMAL;
+	public static var fcMode:String = 'none';
 
 	public var healthBarBA:FlxTiledSprite;
 	public var healthBarBF:FlxTiledSprite;
@@ -481,6 +482,7 @@ class PlayState extends MusicBeatState
 			case 'hell':
 				gameplayMode = HELL_MODE;
 		}
+		fcMode = Init.trueSettings.get('FC Mode');
 
 		dadOpponent = new Character().setCharacter(50, 850, SONG.player2);
 		boyfriend = new Boyfriend();
@@ -1368,7 +1370,8 @@ class PlayState extends MusicBeatState
 		desaturateAmplitude = value;
 		stageBuild.forEach(function(sprite:FlxSprite)
 		{
-			sprite.shader.data.amplitude.value = [desaturateAmplitude];
+			if (sprite.shader != null)
+				sprite.shader.data.amplitude.value = [desaturateAmplitude];
 		});
 		return value;
 	}
@@ -1381,7 +1384,8 @@ class PlayState extends MusicBeatState
 		desaturateAmount = value;
 		stageBuild.forEach(function(sprite:FlxSprite)
 		{
-			sprite.shader.data.desaturationAmount.value = [desaturateAmount];
+			if (sprite.shader != null)
+				sprite.shader.data.desaturationAmount.value = [desaturateAmount];
 		});
 		return value;
 	}
@@ -1443,7 +1447,7 @@ class PlayState extends MusicBeatState
 
 	public function setupGlitchShader()
 	{
-		if (!glitchSet)
+		if (!glitchSet && Init.trueSettings.get('Shaders'))
 		{
 			// /*
 			missingnoGlitch = new GraphicsShader("", Paths.shader('glitch'));
@@ -1461,7 +1465,7 @@ class PlayState extends MusicBeatState
 
 	public function setupFrostbite()
 	{
-		if (!frostSet)
+		if (!frostSet && Init.trueSettings.get('Shaders'))
 		{
 			frostbiteShader = new ShaderFilter(new GraphicsShader("", Paths.shader('snowfall')));
 			vignetteCam.setFilters([frostbiteShader]);
@@ -1480,7 +1484,8 @@ class PlayState extends MusicBeatState
 		{
 			snowIntensity = value;
 			trace(value);
-			frostbiteShader.shader.data.intensity.value = [snowIntensity];
+			if (frostbiteShader != null)
+				frostbiteShader.shader.data.intensity.value = [snowIntensity];
 		}
 		return snowIntensity;
 	}
@@ -1496,7 +1501,8 @@ class PlayState extends MusicBeatState
 		{
 			snowAmount = value;
 			trace(value);
-			frostbiteShader.shader.data.amount.value = [Std.int(snowAmount)];
+			if (frostbiteShader != null)
+				frostbiteShader.shader.data.amount.value = [Std.int(snowAmount)];
 		}
 		return snowAmount;
 	}
@@ -1514,14 +1520,15 @@ class PlayState extends MusicBeatState
 		if (canRise)
 		{
 			brimstoneDistortion = value;
-			brimstoneShader.data.distort.value = [value];
+			if (brimstoneShader != null)
+				brimstoneShader.data.distort.value = [value];
 		}
 		return brimstoneDistortion;
 	}
 
 	public function setupBrimstoneShaders()
 	{
-		if (!brimstoneSet)
+		if (!brimstoneSet && Init.trueSettings.get('Shaders'))
 		{
 			// /*
 			brimstoneShader = new GraphicsShader("", Paths.shader('camEffects'));
@@ -1790,6 +1797,111 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		if (!inCutscene && generatedMusic && !deadstone)
+		{
+			if (startingSong)
+			{
+				if (startedCountdown)
+				{
+					Conductor.songPosition += elapsed * 1000;
+					if (Conductor.songPosition >= 0)
+						startSong();
+				}
+			}
+			else
+			{
+				// Conductor.songPosition = FlxG.sound.music.time;
+				Conductor.songPosition += elapsed * 1000;
+
+				if (!paused)
+				{
+					songTime += FlxG.game.ticks - previousFrameTime;
+					previousFrameTime = FlxG.game.ticks;
+
+					// Interpolation type beat
+					if (Conductor.lastSongPos != Conductor.songPosition)
+					{
+						songTime = (songTime + Conductor.songPosition) / 2;
+						Conductor.lastSongPos = Conductor.songPosition;
+						// Conductor.songPosition += FlxG.elapsed * 1000;
+						// trace('MISSED FRAME');
+					}
+				}
+
+				// penduluuum
+				if (pendulum != null && tranceActive)
+				{
+					var convertedTime:Float = ((Conductor.songPosition / (Conductor.crochet * beatInterval)) * Math.PI);
+					pendulum.angle = (Math.sin(convertedTime) * 32) + pendulumOffset;
+					// pendulum.screenCenter();
+					// /*
+					var pendulumTimeframe = Math.floor(((convertedTime / Math.PI) - Math.floor(convertedTime / Math.PI)) * 1000) / 1000;
+					var reach:Float = 0.2;
+					if (!tranceNotActiveYet)
+					{
+						if (pendulumTimeframe < reach || pendulumTimeframe > (1 - reach))
+						{
+							if (!alreadyHit)
+								canHitPendulum = true;
+						}
+						else
+						{
+							alreadyHit = false;
+							if (canHitPendulum)
+							{
+								if (tranceInterval % 2 == 0)
+									losePendulum(true);
+								tranceInterval++;
+								canHitPendulum = false;
+							}
+						}
+
+						// /*
+						if (controls.SPACE_P || (strumLines.members[playerLane].autoplay && canHitPendulum && !alreadyHit))
+						{
+							if (canHitPendulum)
+							{
+								canHitPendulum = false;
+								alreadyHit = true;
+								winPendulum();
+							}
+							else
+								losePendulum(true);
+						}
+					}
+					// fuck you let me fix this with delta
+					trance -= (((Conductor.bpm / 200) / 1000) * (elapsed / (1 / 90)));
+					// 200 is based on left unchecked bpm & health "restore" decreases based on the bpm
+					// of the song so its not as easy on lower bpm songs
+
+					tranceThing.alpha = trance / 2;
+					if (trance > 1)
+						tranceSound.volume = (trance - 1) / 2;
+					else
+						tranceSound.volume = 0;
+
+					if (trance > 2)
+					{
+						trance = 2;
+						if (tranceCanKill)
+							die();
+					}
+					if (trance < -0.25)
+						trance = -0.25;
+
+					if (trance >= 0.8)
+					{
+						if (trance >= 1.6)
+							boyfriend.idleSuffix = '-alt2';
+						else
+							boyfriend.idleSuffix = '-alt';
+					}
+					else
+						boyfriend.idleSuffix = '';
+				}
+			}
+		}
+
 		super.update(elapsed);
 
 		stageBuild.stageUpdateConstant(elapsed);
@@ -2070,125 +2182,16 @@ class PlayState extends MusicBeatState
 				vocals.volume = soundVolume;
 			songMusic.volume = soundVolume;
 
-			if (!deadstone)
+			if ((useFrostbiteMechanic && typhlosionUses >= 1 && typhlosion.animation.curAnim.name != 'fire' && gameplayMode != PUSSY_MODE)
+				&& (strumLines.members[playerLane].autoplay
+					&& coldness >= 0.5
+					|| (controls.SPACE_P && !strumLines.members[playerLane].autoplay)))
 			{
-				if (startingSong)
-				{
-					if (startedCountdown)
-					{
-						Conductor.songPosition += elapsed * 1000;
-						if (Conductor.songPosition >= 0)
-							startSong();
-					}
-				}
-				else
-				{
-					// Conductor.songPosition = FlxG.sound.music.time;
-					Conductor.songPosition += elapsed * 1000;
-
-					if (!paused)
-					{
-						songTime += FlxG.game.ticks - previousFrameTime;
-						previousFrameTime = FlxG.game.ticks;
-
-						// Interpolation type beat
-						if (Conductor.lastSongPos != Conductor.songPosition)
-						{
-							songTime = (songTime + Conductor.songPosition) / 2;
-							Conductor.lastSongPos = Conductor.songPosition;
-							// Conductor.songPosition += FlxG.elapsed * 1000;
-							// trace('MISSED FRAME');
-						}
-					}
-
-					// penduluuum
-					if (pendulum != null && tranceActive)
-					{
-						var convertedTime:Float = ((Conductor.songPosition / (Conductor.crochet * beatInterval)) * Math.PI);
-						pendulum.angle = (Math.sin(convertedTime) * 32) + pendulumOffset;
-						// pendulum.screenCenter();
-						// /*
-						var pendulumTimeframe = Math.floor(((convertedTime / Math.PI) - Math.floor(convertedTime / Math.PI)) * 1000) / 1000;
-						var reach:Float = 0.2;
-						if (!tranceNotActiveYet)
-						{
-							if (pendulumTimeframe < reach || pendulumTimeframe > (1 - reach))
-							{
-								if (!alreadyHit)
-									canHitPendulum = true;
-							}
-							else
-							{
-								alreadyHit = false;
-								if (canHitPendulum)
-								{
-									if (tranceInterval % 2 == 0)
-										losePendulum(true);
-									tranceInterval++;
-									canHitPendulum = false;
-								}
-							}
-
-							// /*
-							if (controls.SPACE_P || (strumLines.members[playerLane].autoplay && canHitPendulum && !alreadyHit))
-							{
-								if (canHitPendulum)
-								{
-									canHitPendulum = false;
-									alreadyHit = true;
-									winPendulum();
-								}
-								else
-									losePendulum(true);
-							}
-						}
-						// fuck you let me fix this with delta
-						trance -= (((Conductor.bpm / 200) / 1000) * (elapsed / (1 / 90)));
-						// 200 is based on left unchecked bpm & health "restore" decreases based on the bpm
-						// of the song so its not as easy on lower bpm songs
-
-						tranceThing.alpha = trance / 2;
-						if (trance > 1)
-							tranceSound.volume = (trance - 1) / 2;
-						else
-							tranceSound.volume = 0;
-
-						if (trance > 2)
-						{
-							trance = 2;
-							if (tranceCanKill)
-								die();
-						}
-						if (trance < -0.25)
-							trance = -0.25;
-
-						if (trance >= 0.8)
-						{
-							if (trance >= 1.6)
-								boyfriend.idleSuffix = '-alt2';
-							else
-								boyfriend.idleSuffix = '-alt';
-						}
-						else
-							boyfriend.idleSuffix = '';
-					}
-				}
-
-				if ((useFrostbiteMechanic
-					&& typhlosionUses >= 1
-					&& typhlosion.animation.curAnim.name != 'fire'
-					&& gameplayMode != PUSSY_MODE)
-					&& (strumLines.members[playerLane].autoplay
-						&& coldness >= 0.5
-						|| (controls.SPACE_P && !strumLines.members[playerLane].autoplay)))
-				{
-					useTyphlosion();
-				}
-
-				coldnessDisplay = FlxMath.lerp(coldnessDisplay, coldness, (elapsed / (1 / 120)) * 0.03);
+				useTyphlosion();
 			}
-			// boyfriend.playAnim('singLEFT', true);
-			// */
+
+			coldnessDisplay = FlxMath.lerp(coldnessDisplay, coldness, (elapsed / (1 / 120)) * 0.03);
+
 			var char = boyfriend;
 			if (!deadstone && generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 			{
@@ -2265,11 +2268,12 @@ class PlayState extends MusicBeatState
 				brimstoneDistortionTime -= ((elapsed / (1 / 60)) * 0.0125) / 2;
 				stageBuild.forEach(function(sprite:FlxSprite)
 				{
-					sprite.shader.data.distortionTime.value = [brimstoneDistortionTime];
+					if (sprite.shader != null)
+						sprite.shader.data.distortionTime.value = [brimstoneDistortionTime];
 				});
 			}
 
-			if (frostSet)
+			if (frostSet && frostbiteShader != null)
 				frostbiteShader.shader.data.time.value = [Conductor.songPosition / (Conductor.stepCrochet * 8)];
 
 			var lerpVal = (elapsed * 2.4) * cameraSpeed;
@@ -2290,40 +2294,43 @@ class PlayState extends MusicBeatState
 			for (hud in allUIs)
 				hud.angle = FlxMath.lerp(0 + forceZoom[3], hud.angle, easeLerp);
 
+			if (controls.RESET)
+				health = 0;
+
 			if (health < minHealth)
 				health = minHealth;
 			if (health <= minHealth && startedCountdown)
 				die();
 
 			/*if (Main.hypnoDebug)
+				{
+					if (FlxG.keys.justPressed.ONE) 
 						{
-							if (FlxG.keys.justPressed.ONE) 
-								{
-									songMusic.volume = 0;
-									vocals.volume = 0;
-									doMoneyBag();
-								}
-					
-							if (FlxG.keys.justPressed.TWO) {
-								if (!usedTimeTravel && Conductor.songPosition + 10000 < songMusic.length)
-								{
-									usedTimeTravel = true;
-									songMusic.pause();
-									vocals.pause();
-									Conductor.songPosition += 10000;
+							songMusic.volume = 0;
+							vocals.volume = 0;
+							doMoneyBag();
+						}
 
-									canDie = false;
+					if (FlxG.keys.justPressed.TWO) {
+						if (!usedTimeTravel && Conductor.songPosition + 10000 < songMusic.length)
+						{
+							usedTimeTravel = true;
+							songMusic.pause();
+							vocals.pause();
+							Conductor.songPosition += 10000;
 
-									songMusic.time = Conductor.songPosition;
-									songMusic.play();
-									vocals.time = Conductor.songPosition;
-									vocals.play();
-									new FlxTimer().start(0.5, function(tmr:FlxTimer)
-									{
-										usedTimeTravel = false;
-									});
-								}
-							}
+							canDie = false;
+
+							songMusic.time = Conductor.songPosition;
+							songMusic.play();
+							vocals.time = Conductor.songPosition;
+							vocals.play();
+							new FlxTimer().start(0.5, function(tmr:FlxTimer)
+							{
+								usedTimeTravel = false;
+							});
+						}
+					}
 			}*/
 
 			// copy paste im lazy
@@ -2785,6 +2792,11 @@ class PlayState extends MusicBeatState
 			{
 				strumline.allNotes.forEachAlive(function(daNote:Note)
 				{
+					if (strumline.receptors.members[Math.floor(daNote.noteData)] == null)
+					{
+						daNote.active = false;
+						return;
+					}
 					daNote.downscrollNote = strumline.downscroll;
 
 					// set the notes x and y
@@ -2825,7 +2837,7 @@ class PlayState extends MusicBeatState
 					{
 						daNote.y -= ((daNote.height / 2) * downscrollMultiplier);
 
-						if ((daNote.animation.curAnim.name.endsWith('holdend')) && (daNote.prevNote != null))
+						if (daNote.animation.name != null && daNote.animation.name.endsWith('holdend') && daNote.prevNote != null)
 						{
 							daNote.y -= ((daNote.prevNote.height / 2) * downscrollMultiplier);
 							if (daNote.downscrollNote)
@@ -3019,6 +3031,11 @@ class PlayState extends MusicBeatState
 			{
 				hypnoRating.destroy();
 			}
+
+			if (Init.trueSettings.get('Pendulum FC'))
+			{
+				die();
+			}
 		}
 	}
 
@@ -3156,7 +3173,7 @@ class PlayState extends MusicBeatState
 				else
 				{
 					Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
-					if (coolNote.noteType == 2 && coolNote.animation.curAnim.name.contains('end'))
+					if (coolNote.noteType == 2 && coolNote.animation.name != null && coolNote.animation.name.contains('end'))
 					{
 						for (i in character)
 							i.isPressing = false;
@@ -3587,6 +3604,19 @@ class PlayState extends MusicBeatState
 		}
 		else
 			rating.alpha = 0.0001; // uh hopefully this dont break ig
+		
+		switch (daRating)
+		{
+			case 'good':
+				if (fcMode == 'sfc')
+					die();
+			case 'bad':
+				if (fcMode == 'sfc' || fcMode == 'gfc')
+					die();
+			case 'shit', 'miss':
+				if (fcMode != 'none')
+					die();
+		}
 	}
 
 	function healthCall(?ratingMultiplier:Float = 0)

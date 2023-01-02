@@ -194,9 +194,11 @@ frostbite,shitno,monochrome,stranged red and isotope,missingno and a few other s
         camHUD.x = FlxG.width / 2 - camHUD.width / 2;
 		camHUD.y = (FlxG.height / 2 - camHUD.height / 2) - 64;
 
-		chromaticAberration = new ShaderFilter(new GraphicsShader("", Paths.shader('monitor')));
-		// chromaticAberration.shader.data.effectTime.value = [aberrateTimeValue];
-		camHUD.setFilters([chromaticAberration]); 
+		if (Init.trueSettings.get('Shaders')) {
+			chromaticAberration = new ShaderFilter(new GraphicsShader("", Paths.shader('monitor')));
+			// chromaticAberration.shader.data.effectTime.value = [aberrateTimeValue];
+			camHUD.setFilters([chromaticAberration]);
+		}
 
 		// camHUD
 		var background:FlxGroup = new FlxGroup();

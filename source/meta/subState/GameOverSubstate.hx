@@ -344,7 +344,7 @@ class GameOverSubstate extends MusicBeatSubState
 					add(confirm);
 					confirm.playAnim('idle');
 				};
-			case 'cold-gold' | 'ponyta' | 'pico' | 'glitchy-red':
+			case 'cold-gold' | 'ponyta' | 'pico' | 'glitchy-bf':
 				var retry:FNFSprite = new FNFSprite(280, 200);
 				retry.frames = Paths.getSparrowAtlas('characters/death/bygone/Retry');
 				retry.animation.addByPrefix('idle', "Retry instance 1", 24, false);
@@ -539,8 +539,12 @@ class GameOverSubstate extends MusicBeatSubState
 				var deathCam:FlxCamera = new FlxCamera(0, 0, 768, 672);
 				FlxG.cameras.reset(deathCam);
 
-				var crt:ShaderFilter = new ShaderFilter(new GraphicsShader("", Paths.shader('crt')));
-				deathCam.setFilters([crt]);
+				var crt:ShaderFilter = null;
+				if (Init.trueSettings.get('Shaders'))
+				{
+					crt = new ShaderFilter(new GraphicsShader("", Paths.shader('crt')));
+					deathCam.setFilters([crt]);
+				}
 				// lmao
 				deathCam.x += (FlxG.width / 2 - deathCam.width / 2);
 				deathCam.y += (FlxG.height / 2 - deathCam.height / 2);
@@ -668,12 +672,16 @@ class GameOverSubstate extends MusicBeatSubState
 						FlxG.cameras.setDefaultDrawTarget(camera, false);
 					FlxG.cameras.add(camHUD, true);
 
-					var shaderabb:ShaderFilter = new ShaderFilter(new GraphicsShader("", Paths.shader('aberration')));
-					camHUD.setFilters([shaderabb]);
-					if (shaderabb != null)
+					var shaderabb:ShaderFilter = null;
+					if (Init.trueSettings.get('Shaders'))
 					{
-						shaderabb.shader.data.aberration.value = [0.001];
-						shaderabb.shader.data.effectTime.value = [0.001];
+						shaderabb = new ShaderFilter(new GraphicsShader("", Paths.shader('aberration')));
+						camHUD.setFilters([shaderabb]);
+						if (shaderabb != null)
+						{
+							shaderabb.shader.data.aberration.value = [0.001];
+							shaderabb.shader.data.effectTime.value = [0.001];
+						}
 					}
 
 					var shitno:FlxSprite = new FlxSprite().loadGraphic(Paths.image('jumpscares/Shitno'));

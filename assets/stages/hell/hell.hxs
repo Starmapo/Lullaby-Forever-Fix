@@ -120,7 +120,8 @@ function onCreate() {
 	pillar.updateHitbox();
 
 	PlayState.ratingPosition.set(600, 800);
-	PlayState.bronzongMechanic = true;
+	if (PlayState.gameplayMode != 'PUSSY_MODE')
+		PlayState.bronzongMechanic = true;
 }
 
 function onCreatePost() {

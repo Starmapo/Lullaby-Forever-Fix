@@ -53,14 +53,16 @@ function onCreatePost() {
     try pushing it to the main thing, if this works that work I did like 6 months ago will actually be useful
     im hoping it does because of how stupid shadercatalog was, I don't know why I implemented that, so giving it some use is good I guess
     */
-    gameboyFilter = new GraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
-    var filterFilter:ShaderFilter = new ShaderFilter(gameboyFilter);
-    PlayState.instance.shaderCatalog.insert(0, filterFilter);
-    PlayState.camGame.setFilters(PlayState.instance.shaderCatalog);
-    for (hud in PlayState.instance.allUIs)
-        hud.setFilters([filterFilter]);
-    PlayState.dialogueHUD.setFilters([filterFilter]);
-    gameboyFilter.data.intensity.value = [0.0];
+    if (Init.trueSettings.get('Shaders')) {
+        gameboyFilter = new GraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
+        var filterFilter:ShaderFilter = new ShaderFilter(gameboyFilter);
+        PlayState.instance.shaderCatalog.insert(0, filterFilter);
+        PlayState.camGame.setFilters(PlayState.instance.shaderCatalog);
+        for (hud in PlayState.instance.allUIs)
+            hud.setFilters([filterFilter]);
+        PlayState.dialogueHUD.setFilters([filterFilter]);
+        gameboyFilter.data.intensity.value = [0.0];
+    }
 
     // IT FUCKING WOOOOORKSSSS
 
@@ -359,37 +361,39 @@ function onEvent(eventName) {
 }
 
 function mukSplatter() {
-    PlayState.instance.brimstoneShaking = true;
-    PlayState.instance.myShake = PlayState.instance.shakeProgress;
+	if (PlayState.gameplayMode != 'PUSSY_MODE') {
+		PlayState.instance.brimstoneShaking = true;
+		PlayState.instance.myShake = PlayState.instance.shakeProgress;
 
-    //
-    var mukSplatSprite:FlxSprite = new FlxSprite();
-    mukSplatSprite.frames = Paths.getSparrowAtlas('characters/buried/muksludge');
-    mukSplatSprite.animation.addByPrefix('0', 'Sludge_01', 24, false);
-    mukSplatSprite.animation.addByPrefix('1', 'Sludge_02', 24, false);
-    mukSplatSprite.animation.addByPrefix('2', 'Sludge_03', 24, false);
-    mukSplatSprite.animation.play(Std.string(FlxG.random.int(0, 2)));
-    PlayState.instance.add(mukSplatSprite);
-    mukSplatSprite.setGraphicSize(Std.int(mukSplatSprite.width * 4));
-    mukSplatSprite.updateHitbox();
-    mukSplatSprite.cameras = [PlayState.dialogueHUD];
-    mukSplatSprite.screenCenter();
-    FlxG.sound.play(Paths.sound('MukCums'));
-    //
-    mukSplatSprite.animation.finishCallback = function(name:String) {
-		if (muk.animation.curAnim.name != 'outro')
-			muk.dance(true);
-		FlxTween.tween(mukSplatSprite, {alpha: 0}, (Conductor.stepCrochet * 4) / 1000, {onComplete: 
-            function(tween:FlxTween) {
-                mukSplatSprite.destroy();
-            }
-        });
-    }
+		//
+		var mukSplatSprite:FlxSprite = new FlxSprite();
+		mukSplatSprite.frames = Paths.getSparrowAtlas('characters/buried/muksludge');
+		mukSplatSprite.animation.addByPrefix('0', 'Sludge_01', 24, false);
+		mukSplatSprite.animation.addByPrefix('1', 'Sludge_02', 24, false);
+		mukSplatSprite.animation.addByPrefix('2', 'Sludge_03', 24, false);
+		mukSplatSprite.animation.play(Std.string(FlxG.random.int(0, 2)));
+		PlayState.instance.add(mukSplatSprite);
+		mukSplatSprite.setGraphicSize(Std.int(mukSplatSprite.width * 4));
+		mukSplatSprite.updateHitbox();
+		mukSplatSprite.cameras = [PlayState.dialogueHUD];
+		mukSplatSprite.screenCenter();
+		FlxG.sound.play(Paths.sound('MukCums'));
+		//
+		mukSplatSprite.animation.finishCallback = function(name:String) {
+			if (muk.animation.curAnim.name != 'outro')
+				muk.dance(true);
+			FlxTween.tween(mukSplatSprite, {alpha: 0}, (Conductor.stepCrochet * 4) / 1000, {onComplete: 
+				function(tween:FlxTween) {
+					mukSplatSprite.destroy();
+				}
+			});
+		}
+	}
 }
 
 function onStep(beat)
     {
-        if (muk != null && muk.visible && muk.animation.curAnim.name == 'idle')
+        if (muk != null && muk.visible && muk.animation.curAnim.name == 'idle' && PlayState.gameplayMode != 'PUSSY_MODE')
             {
                 pukeCooldown--;
                 var possibleNoteList:Array<Note> = [];
