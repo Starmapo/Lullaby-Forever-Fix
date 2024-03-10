@@ -375,9 +375,9 @@ class PokedexState extends MusicBeatState
 				switch (dexArray[curSelect].name)
 				{
 					case "Missingno" | "Glitchy Red":
-						FlxG.camera.setFilters([glitch]);
+						FlxG.camera.filters = [glitch];
 					default:
-						FlxG.camera.setFilters([]);
+						FlxG.camera.filters = [];
 				}
 			}
 		}

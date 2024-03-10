@@ -2,14 +2,10 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
-import gameObjects.userInterface.*;
 import gameObjects.userInterface.menu.*;
 import gameObjects.userInterface.notes.*;
 import gameObjects.userInterface.notes.Strumline.UIStaticArrow;
-import meta.data.Conductor;
-import meta.data.Section.SwagSection;
 import meta.data.Timings;
 import meta.state.PlayState;
 
@@ -144,8 +140,7 @@ class ForeverAssets
 				}
 				else
 				{
-					tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('splash-pixel', assetModifier, changeableSkin, baseLibrary)), true, 34,
-						34);
+					tempSplash.loadGraphic(Paths.image(ForeverTools.returnSkinAsset('splash-pixel', assetModifier, changeableSkin, baseLibrary)), true, 34, 34);
 					tempSplash.setGraphicSize(Std.int(tempSplash.width * PlayState.daPixelZoom));
 
 					tempSplash.addOffset('anim1', -120, -90);
@@ -245,10 +240,6 @@ class ForeverAssets
 				newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset('$framesArgument', assetModifier,
 					Init.trueSettings.get("Note Skin"), 'UI'));
 
-				newStaticArrow.animation.addByPrefix('static', 'arrow' + stringSect.toUpperCase());
-				newStaticArrow.animation.addByPrefix('pressed', stringSect + ' press', 24, false);
-				newStaticArrow.animation.addByPrefix('confirm', stringSect + ' confirm', 24, false);
-
 				if (staticArrowType == 4)
 				{
 					newStaticArrow.frames = Paths.getSparrowAtlas(ForeverTools.returnSkinAsset('hellbell/Bronzong_Gong_mechanic', assetModifier,
@@ -262,6 +253,12 @@ class ForeverAssets
 					newStaticArrow.addOffset('pressed', 100, 0);
 					newStaticArrow.addOffset('confirm', 100, 0);
 					newStaticArrow.y -= 15;
+				}
+				else
+				{
+					newStaticArrow.animation.addByPrefix('static', 'arrow' + stringSect.toUpperCase());
+					newStaticArrow.animation.addByPrefix('pressed', stringSect + ' press', 24, false);
+					newStaticArrow.animation.addByPrefix('confirm', stringSect + ' confirm', 24, false);
 				}
 
 				newStaticArrow.antialiasing = true;
@@ -339,9 +336,9 @@ class ForeverAssets
 				newCheckmark.antialiasing = true;
 
 				newCheckmark.animation.addByPrefix('false finished', 'uncheckFinished');
-				newCheckmark.animation.addByPrefix('false', 'uncheck', 12, false);
+				newCheckmark.animation.addByPrefix('false', 'uncheck0', 12, false);
 				newCheckmark.animation.addByPrefix('true finished', 'checkFinished');
-				newCheckmark.animation.addByPrefix('true', 'check', 12, false);
+				newCheckmark.animation.addByPrefix('true', 'check0', 12, false);
 
 				// for week 7 assets when they decide to exist
 				// animation.addByPrefix('false', 'Check Box unselected', 24, true);

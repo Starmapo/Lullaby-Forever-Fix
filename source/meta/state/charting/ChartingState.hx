@@ -20,7 +20,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
@@ -45,10 +45,9 @@ import openfl.geom.Rectangle;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
+import sys.thread.Thread;
 
 using StringTools;
-
-import sys.thread.Thread;
 
 /**
 	As the name implies, this is the class where all of the charting state stuff happens, so when you press 7 the game

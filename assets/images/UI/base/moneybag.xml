@@ -37,5 +37,5 @@
 	<SubTexture name="Moneybag final0032" x="804" y="752" width="60" height="104" frameX="-23" frameY="-659" frameWidth="106" frameHeight="866"/>
 	<SubTexture name="Moneybag final0033" x="869" y="752" width="40" height="132" frameX="-33" frameY="-675" frameWidth="106" frameHeight="866"/>
 	<SubTexture name="Moneybag final0034" x="914" y="752" width="22" height="154" frameX="-43" frameY="-712" frameWidth="106" frameHeight="866"/>
-	<SubTexture name="Moneybag final0035" x="941" y="752" width="0" height="0" frameX="1166" frameY="-15" frameWidth="106" frameHeight="866"/>
+	<SubTexture name="Moneybag final0035" x="941" y="752" width="1" height="1" frameX="1166" frameY="-15" frameWidth="106" frameHeight="866"/>
 </TextureAtlas>

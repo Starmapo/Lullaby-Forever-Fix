@@ -28,7 +28,7 @@
 	<assets path="shitpost" library="shitpost" embed="true"/>
 	<assets path="dlls/" rename='' />
 	<assets path="plugins/" rename='' />
-	<assets path="FE-CrashDialog.exe" type="template" if="windows release" />
+	<assets path="FE-CrashDialog.exe" type="template" if="windows" unless="debug" />
 	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits"/>
 	<!--<assets path="mods" />-->
 
@@ -78,11 +78,9 @@
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
-	<!-- Akways enable Null Object Reference check for crash dialog -->
+	<!-- Always enable Null Object Reference check for crash dialog -->
 	<haxedef name="HXCPP_CHECK_POINTER" />
 	<haxedef name="HXCPP_STACK_LINE" />
-
-	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 

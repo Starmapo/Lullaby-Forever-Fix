@@ -3,7 +3,6 @@ package meta.subState;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import meta.MusicBeat.MusicBeatSubState;
@@ -30,7 +29,7 @@ class PastaNightSelect extends MusicBeatSubState {
 		
 		if (Init.trueSettings.get('Shaders')) {
 			crt = new ShaderFilter(new GraphicsShader("", Paths.shader('crt')));
-			selectCam.setFilters([crt]);
+			selectCam.filters = [crt];
 		}
 		// lmao
 		selectCam.x += (FlxG.width / 2 - selectCam.width / 2);

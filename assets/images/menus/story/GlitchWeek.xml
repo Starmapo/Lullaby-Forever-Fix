@@ -24,8 +24,8 @@
 	<SubTexture name="GlitchWeekConfirm0019" x="1505" y="5" width="433" height="512" frameX="-231" frameY="0" frameWidth="694" frameHeight="723"/>
 	<SubTexture name="GlitchWeekConfirm0020" x="5" y="522" width="539" height="444" frameX="-30" frameY="-250" frameWidth="694" frameHeight="723"/>
 	<SubTexture name="GlitchWeekConfirm0021" x="549" y="522" width="269" height="227" frameX="0" frameY="-496" frameWidth="694" frameHeight="723"/>
-	<SubTexture name="GlitchWeekConfirm0022" x="823" y="522" width="0" height="0" frameX="132" frameY="17" frameWidth="694" frameHeight="723"/>
-	<SubTexture name="GlitchWeekConfirm0023" x="823" y="522" width="0" height="0" frameX="132" frameY="17" frameWidth="694" frameHeight="723"/>
+	<SubTexture name="GlitchWeekConfirm0022" x="823" y="522" width="1" height="1" frameX="132" frameY="17" frameWidth="694" frameHeight="723"/>
+	<SubTexture name="GlitchWeekConfirm0023" x="823" y="522" width="1" height="1" frameX="132" frameY="17" frameWidth="694" frameHeight="723"/>
 	<SubTexture name="GlitchWeek0000" x="828" y="522" width="377" height="367" frameX="-138" frameY="-26" frameWidth="685" frameHeight="518"/>
 	<SubTexture name="GlitchWeek0001" x="1210" y="522" width="552" height="373" frameX="-51" frameY="-23" frameWidth="685" frameHeight="518"/>
 	<SubTexture name="GlitchWeek0002" x="5" y="971" width="563" height="364" frameX="0" frameY="0" frameWidth="685" frameHeight="518"/>

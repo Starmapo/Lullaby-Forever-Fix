@@ -1,0 +1,62 @@
+{
+  "dependencies": [
+    {
+      "name": "discord_rpc",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/Starmapo/linc_discord-rpc.git"
+    },
+    {
+      "name": "flixel",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "flixel-addons",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "flixel-ui",
+      "type": "git",
+      "dir": null,
+      "ref": "dev",
+      "url": "https://github.com/HaxeFlixel/flixel-ui.git"
+    },
+    {
+      "name": "hscript",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/Starmapo/hscript.git"
+    },
+    {
+      "name": "hxCodec",
+      "type": "haxelib",
+      "version": "2.5.1"
+    },
+    {
+      "name": "hxcpp",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "hxcpp-debug-server",
+      "type": "git",
+      "dir": "hxcpp-debug-server",
+      "ref": "master",
+      "url": "https://github.com/Starmapo/hxcpp-debugger.git"
+    },
+    {
+      "name": "lime",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "openfl",
+      "type": "haxelib",
+      "version": null
+    }
+  ]
+}

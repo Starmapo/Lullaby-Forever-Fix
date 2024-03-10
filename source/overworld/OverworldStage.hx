@@ -126,7 +126,7 @@ class OverworldStage extends FlxState
 
 			var gameboyShader:GraphicsShader = new GraphicsShader("", Paths.shader('brimstone/brimstoneCamEffects'));
 			var gameboyFilter:ShaderFilter = new ShaderFilter(gameboyShader);
-			gameCam.setFilters([gameboyFilter, glitchSprite]);
+			gameCam.filters = [gameboyFilter, glitchSprite];
 			// uiCam.setFilters([gameboyFilter]);
 			gameboyShader.data.intensity.value = [1.0];
 		}

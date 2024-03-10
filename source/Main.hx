@@ -1,14 +1,9 @@
 package;
 
-import cpp.Pointer;
-import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxGame;
-import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.util.FlxColor;
-import haxe.CallStack.StackItem;
 import haxe.CallStack;
 import haxe.io.Path;
 import lime.app.Application;
@@ -17,12 +12,8 @@ import meta.data.PlayerSettings;
 import meta.data.ScriptHandler;
 import meta.data.dependency.Discord;
 import meta.data.dependency.FNFTransition;
-import meta.data.dependency.FNFUIState;
-import openfl.Assets;
 import openfl.Lib;
-import openfl.display.FPS;
 import openfl.display.Sprite;
-import openfl.events.Event;
 import openfl.events.UncaughtErrorEvent;
 import sys.FileSystem;
 import sys.io.File;
@@ -79,7 +70,7 @@ class Main extends Sprite
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var infoCounter:InfoHud; // initialize the heads up display that shows information before creating it.
 
-	public static var hypnoDebug:Bool = false;
+	public static var hypnoDebug:Bool = #if debug true #else false #end;
 
 	// heres gameweeks set up!
 
@@ -127,8 +118,6 @@ class Main extends Sprite
 			note studders and shit its weird.
 		**/
 
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
-
 		// simply said, a state is like the 'surface' area of the window where everything is drawn.
 		// if you've used gamemaker you'll probably understand the term surface better
 		// this defines the surface bounds
@@ -169,6 +158,8 @@ class Main extends Sprite
 
 		infoCounter = new InfoHud(0, 0);
 		addChild(infoCounter);
+
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 
 		// glsl bullshit
 		trace(lime.graphics.opengl.GL.VERSION);
@@ -238,7 +229,7 @@ class Main extends Sprite
 			}
 		}
 
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/Yoshubs/Forever-Engine";
+		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/Starmapo/Lullaby-Forever-Fix";
 
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");
@@ -269,6 +260,7 @@ class Main extends Sprite
 			Application.current.window.alert(errMsg, "Error!");
 		}
 
+		Discord.shutdownRPC();
 		Sys.exit(1);
 	}
 }

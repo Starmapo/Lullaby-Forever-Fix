@@ -6,7 +6,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flxanimate.data.SpriteMapData.AnimateAtlas;
 import haxe.Json;
 import haxe.io.Path;

@@ -26,7 +26,7 @@
 	<SubTexture name="GGirl Passing0021" x="884" y="648" width="267" height="315" frameX="-22" frameY="-63" frameWidth="312" frameHeight="593"/>
 	<SubTexture name="GGirl Passing0022" x="1151" y="648" width="262" height="317" frameX="-35" frameY="-71" frameWidth="312" frameHeight="593"/>
 	<SubTexture name="GGirl Passing0023" x="1151" y="648" width="262" height="317" frameX="-35" frameY="-71" frameWidth="312" frameHeight="593"/>
-	<SubTexture name="GGirl Passing0024" x="1413" y="648" width="0" height="0" frameX="1056" frameY="-128" frameWidth="312" frameHeight="593"/>
-	<SubTexture name="GGirl Passing0025" x="1413" y="648" width="0" height="0" frameX="1056" frameY="-128" frameWidth="312" frameHeight="593"/>
-	<SubTexture name="GGirl Passing0026" x="1413" y="648" width="0" height="0" frameX="1056" frameY="-128" frameWidth="312" frameHeight="593"/>
+	<SubTexture name="GGirl Passing0024" x="1413" y="648" width="1" height="1" frameX="1056" frameY="-128" frameWidth="312" frameHeight="593"/>
+	<SubTexture name="GGirl Passing0025" x="1413" y="648" width="1" height="1" frameX="1056" frameY="-128" frameWidth="312" frameHeight="593"/>
+	<SubTexture name="GGirl Passing0026" x="1413" y="648" width="1" height="1" frameX="1056" frameY="-128" frameWidth="312" frameHeight="593"/>
 </TextureAtlas>

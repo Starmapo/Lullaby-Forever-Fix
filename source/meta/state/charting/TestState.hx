@@ -15,7 +15,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxFrame;
 import flixel.graphics.tile.FlxGraphicsShader;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;

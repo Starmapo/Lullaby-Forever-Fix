@@ -4,7 +4,6 @@ import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.FlxSubState;
 import flixel.graphics.FlxGraphic;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -13,7 +12,6 @@ import flixel.util.FlxTimer;
 import gameObjects.Boyfriend;
 import gameObjects.Character;
 import meta.MusicBeat.MusicBeatSubState;
-import meta.data.Conductor.BPMChangeEvent;
 import meta.data.Conductor;
 import meta.data.dependency.FNFSprite;
 import meta.state.*;
@@ -21,12 +19,10 @@ import meta.state.menus.*;
 import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
 import openfl.media.Sound;
-import openfl.utils.Assets;
 import vlc.MP4Handler;
-#if sys
-import sys.FileSystem;
-#end
 
+#if sys
+#end
 class GameOverSubstate extends MusicBeatSubState
 {
 	//
@@ -107,8 +103,8 @@ class GameOverSubstate extends MusicBeatSubState
 				daBf = 'buryman-death';
 				deathSoundName = 'buryman-death/BA${FlxG.random.int(0, 3)}';
 				loopSoundName = 'BurymanDeath';
-				precacheSoundFile(Paths.sound('buryman-death/buriedThud'));
-				precacheSoundFile(Paths.sound('buryman-death/buriedDeath'));
+				Paths.sound('buryman-death/buriedThud');
+				Paths.sound('buryman-death/buriedDeath');
 			case 'dawn' | 'dawn-bf':
 				daBf = 'dawn';
 				loopSoundName = 'DeathTollDeathAmbience';
@@ -127,13 +123,13 @@ class GameOverSubstate extends MusicBeatSubState
 				}
 				deathSoundName = 'PS_Death';
 			case 'grey':
-				precacheSoundFile(Paths.sound('Shitno-Death'));
+				Paths.sound('Shitno-Death');
 			default:
 				daBf = PlayState.boyfriend.curCharacter;
 		}
-		precacheSoundFile(Paths.sound(deathSoundName));
-		precacheSoundFile(Paths.sound(loopSoundName));
-		precacheSoundFile(Paths.sound(deathSoundName));
+		Paths.sound(deathSoundName);
+		Paths.music(loopSoundName);
+		Paths.music(endSoundName);
 	}
 
 	public var deathEnd:Void->Void = function() {};
@@ -369,8 +365,7 @@ class GameOverSubstate extends MusicBeatSubState
 
 				deathEnd = function()
 				{
-					remove(retry);
-					FlxG.sound.play(Paths.sound(endSoundName));
+					FlxG.sound.play(Paths.music(endSoundName));
 					FlxTween.tween(retry, {alpha: 0.0}, 1.0, {ease: FlxEase.linear});
 				};
 
@@ -543,7 +538,7 @@ class GameOverSubstate extends MusicBeatSubState
 				if (Init.trueSettings.get('Shaders'))
 				{
 					crt = new ShaderFilter(new GraphicsShader("", Paths.shader('crt')));
-					deathCam.setFilters([crt]);
+					deathCam.filters = [crt];
 				}
 				// lmao
 				deathCam.x += (FlxG.width / 2 - deathCam.width / 2);
@@ -635,8 +630,8 @@ class GameOverSubstate extends MusicBeatSubState
 
 					deathEnd = function()
 					{
-						if (video != null)
-							video.finishVideo();
+						video.stop();
+						FlxTween.tween(video, {alpha: 0}, timeBeforeEnd, {ease: FlxEase.linear});
 						FlxTween.tween(bg, {alpha: 0}, timeBeforeEnd, {ease: FlxEase.linear});
 
 						onEnd = function()
@@ -651,8 +646,7 @@ class GameOverSubstate extends MusicBeatSubState
 
 					escapeFunction = function()
 					{
-						if (video != null)
-							video.finishVideo();
+						video.stop();
 					}
 				}
 				else if (PlayState.SONG.song.toLowerCase() == "monochrome")
@@ -676,7 +670,7 @@ class GameOverSubstate extends MusicBeatSubState
 					if (Init.trueSettings.get('Shaders'))
 					{
 						shaderabb = new ShaderFilter(new GraphicsShader("", Paths.shader('aberration')));
-						camHUD.setFilters([shaderabb]);
+						camHUD.filters = [shaderabb];
 						if (shaderabb != null)
 						{
 							shaderabb.shader.data.aberration.value = [0.001];
@@ -758,13 +752,6 @@ class GameOverSubstate extends MusicBeatSubState
 				+ bf.characterData.camOffsetY, 1, 1);
 			add(camFollow);
 		}
-	}
-
-	// from psych engine
-	private static function precacheSoundFile(file:Dynamic):Void
-	{
-		if (Assets.exists(file, SOUND) || Assets.exists(file, MUSIC))
-			Assets.getSound(file, true);
 	}
 
 	override function update(elapsed:Float)

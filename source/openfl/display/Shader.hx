@@ -102,12 +102,11 @@ import openfl.utils._internal.Log;
 	**Mobile Browser Support:** This feature is not supported in mobile
 	browsers.
 
-	_AIR profile support:_ This feature is supported on all desktop operating
+	_Adobe AIR profile support:_ This feature is supported on all desktop operating
 	systems, but it is not supported on all mobile devices. It is not
-	supported on AIR for TV devices. See <a
-	href="http://help.adobe.com/en_US/air/build/WS144092a96ffef7cc16ddeea2126bb46b82f-8000.html">
-	AIR Profile Support</a> for more information regarding API support across
-	multiple profiles.
+	supported on AIR for TV devices. See
+	[AIR Profile Support](https://help.adobe.com/en_US/air/build/WS144092a96ffef7cc16ddeea2126bb46b82f-8000.html)
+	for more information regarding API support across multiple profiles.
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -322,13 +321,18 @@ class Shader
 		var shader = gl.createShader(type);
 		gl.shaderSource(shader, source);
 		gl.compileShader(shader);
+		var shaderInfoLog = gl.getShaderInfoLog(shader);
+		var hasInfoLog = shaderInfoLog != null && StringTools.trim(shaderInfoLog) != "";
+		var compileStatus = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
 
-		if (gl.getShaderParameter(shader, gl.COMPILE_STATUS) == 0)
+		if (hasInfoLog || compileStatus == 0)
 		{
-			var message = (type == gl.VERTEX_SHADER) ? "Error compiling vertex shader" : "Error compiling fragment shader";
-			message += "\n" + gl.getShaderInfoLog(shader);
+			var message = (compileStatus == 0) ? "Error" : "Info";
+			message += (type == gl.VERTEX_SHADER) ? " compiling vertex shader" : " compiling fragment shader";
+			message += "\n" + shaderInfoLog;
 			message += "\n" + source;
-			Log.error(message);
+			if (compileStatus == 0) Log.error(message);
+			else if (hasInfoLog) Log.debug(message);
 		}
 
 		return shader;
@@ -385,6 +389,7 @@ class Shader
 		{
 			input.__disableGL(__context, textureCount);
 			textureCount++;
+			if (textureCount == gl.MAX_TEXTURE_IMAGE_UNITS) break;
 		}
 
 		for (parameter in __paramBool)
@@ -476,18 +481,22 @@ class Shader
 		{
 			var gl = __context.gl;
 
+			#if (js && html5)
+			var prefix = (precisionHint == FULL ? "precision mediump float;\n" : "precision lowp float;\n");
+			#else
 			var prefix = "
-				#version 150
-				#ifdef GL_ES
+				#version 150\n
+				#ifdef GL_ES\n
 				"
-				+ (precisionHint == FULL ? "#ifdef GL_FRAGMENT_PRECISION_HIGH
-				precision highp float;
-				#else
-				precision mediump float;
-				#endif" : "precision lowp float;")
+				+ (precisionHint == FULL ? "#ifdef GL_FRAGMENT_PRECISION_HIGH\n
+				precision highp float;\n
+				#else\n
+				precision mediump float;\n
+				#endif\n" : "precision lowp float;\n")
 				+ "
-				#endif
+				#endif\n\n
 				";
+			#end
 
 			var vertex = prefix + glVertexSource;
 			var fragment = prefix + glFragmentSource;

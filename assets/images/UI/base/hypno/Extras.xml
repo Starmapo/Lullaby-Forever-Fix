@@ -12,7 +12,7 @@
 	<SubTexture name="Checkmark0007" x="712" y="20" width="198" height="174" frameX="-9" frameY="0" frameWidth="221" frameHeight="177"/>
 	<SubTexture name="Checkmark0008" x="930" y="20" width="198" height="174" frameX="-9" frameY="0" frameWidth="221" frameHeight="177"/>
 	<SubTexture name="Checkmark0009" x="712" y="20" width="198" height="174" frameX="-9" frameY="0" frameWidth="221" frameHeight="177"/>
-	<SubTexture name="Checkmark0010" x="1148" y="20" width="0" height="0" frameX="401" frameY="65" frameWidth="221" frameHeight="177"/>
+	<SubTexture name="Checkmark0010" x="1148" y="20" width="1" height="1" frameX="401" frameY="65" frameWidth="221" frameHeight="177"/>
 	<SubTexture name="Spacebar0000" x="1168" y="20" width="212" height="184" frameX="-9" frameY="-11" frameWidth="222" frameHeight="196"/>
 	<SubTexture name="Spacebar0001" x="1400" y="20" width="213" height="185" frameX="-9" frameY="-11" frameWidth="222" frameHeight="196"/>
 	<SubTexture name="Spacebar0002" x="1633" y="20" width="211" height="185" frameX="-9" frameY="-11" frameWidth="222" frameHeight="196"/>
@@ -41,5 +41,5 @@
 	<SubTexture name="X finished0007" x="1771" y="441" width="217" height="209" frameX="-36" frameY="-9" frameWidth="263" frameHeight="226"/>
 	<SubTexture name="X finished0008" x="20" y="679" width="218" height="207" frameX="-30" frameY="-10" frameWidth="263" frameHeight="226"/>
 	<SubTexture name="X finished0009" x="258" y="679" width="210" height="221" frameX="-27" frameY="-2" frameWidth="263" frameHeight="226"/>
-	<SubTexture name="X finished0010" x="488" y="679" width="0" height="0" frameX="193" frameY="60" frameWidth="263" frameHeight="226"/>
+	<SubTexture name="X finished0010" x="488" y="679" width="1" height="1" frameX="193" frameY="60" frameWidth="263" frameHeight="226"/>
 </TextureAtlas>

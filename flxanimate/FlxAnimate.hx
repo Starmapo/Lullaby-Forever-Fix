@@ -9,7 +9,7 @@ import flixel.math.FlxMath;
 import flixel.math.FlxMatrix;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.util.FlxDestroyUtil;
 import flxanimate.animate.*;
 import flxanimate.animate.FlxAnim;

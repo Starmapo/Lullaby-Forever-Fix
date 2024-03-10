@@ -2,7 +2,6 @@ package flixel.system.ui;
 
 #if FLX_SOUND_SYSTEM
 import flixel.FlxG;
-import flixel.system.FlxAssets;
 import flixel.util.FlxColor;
 import openfl.Lib;
 import openfl.display.Bitmap;
@@ -12,12 +11,13 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFormatAlign;
 #if flash
-import flash.text.AntiAliasType;
-import flash.text.GridFitType;
+import openfl.text.AntiAliasType;
+import openfl.text.GridFitType;
 #end
 
 /**
  * The flixel sound tray, the little volume meter that pops down sometimes.
+ * Accessed via `FlxG.game.soundTray` or `FlxG.sound.soundTray`.
  */
 class FlxSoundTray extends Sprite
 {
@@ -42,6 +42,12 @@ class FlxSoundTray extends Sprite
 	var _width:Int = 80;
 
 	var _defaultScale:Float = 2.0;
+
+	/**The sound used when increasing the volume.**/
+	public var volumeUpSound:String = "flixel/sounds/beep";
+
+	/**The sound used when decreasing the volume.**/
+	public var volumeDownSound:String = 'flixel/sounds/beep';
 
 	/**Whether or not changing the volume should make noise.**/
 	public var silent:Bool = false;
@@ -101,18 +107,18 @@ class FlxSoundTray extends Sprite
 	}
 
 	/**
-	 * This function just updates the soundtray object.
+	 * This function updates the soundtray object.
 	 */
 	public function update(MS:Float):Void
 	{
-		// Animate stupid sound tray thing
+		// Animate sound tray thing
 		if (_timer > 0)
 		{
-			_timer -= MS / 1000;
+			_timer -= (MS / 1000);
 		}
 		else if (y > -height)
 		{
-			y -= (MS / 1000) * FlxG.height * 2;
+			y -= (MS / 1000) * height * 0.5;
 
 			if (y <= -height)
 			{
@@ -120,12 +126,15 @@ class FlxSoundTray extends Sprite
 				active = false;
     		}
 
-            if (FlxG.save.data != null)
-				{
-					FlxG.save.data.mute = FlxG.sound.muted;
-					FlxG.save.data.volume = FlxG.sound.volume;
-					FlxG.save.flush();
-				}
+			#if FLX_SAVE
+			// Save sound preferences
+            if (FlxG.save.isBound)
+			{
+				FlxG.save.data.mute = FlxG.sound.muted;
+				FlxG.save.data.volume = FlxG.sound.volume;
+				FlxG.save.flush();
+			}
+			#end
 		}
 	}
 
@@ -141,7 +150,6 @@ class FlxSoundTray extends Sprite
 			var sound = Paths.sound('ui_soundChange');
 			if (sound != null)
 				FlxG.sound.load(sound).play();
-            trace(up);
 		}
 
 		_timer = 1;

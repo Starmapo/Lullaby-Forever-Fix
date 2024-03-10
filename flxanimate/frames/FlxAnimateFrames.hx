@@ -1,29 +1,26 @@
 package flxanimate.frames;
-import flixel.graphics.frames.FlxFramesCollection;
-import flxanimate.data.AnimationData.OneOfTwo;
-import openfl.geom.Rectangle;
-import flxanimate.data.SpriteMapData.Meta;
-import haxe.io.Bytes;
-import flxanimate.zip.Zip;
-import haxe.io.BytesInput;
-import flixel.math.FlxMatrix;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
+import flixel.graphics.frames.FlxFrame;
+import flixel.graphics.frames.FlxFramesCollection;
+import flixel.math.FlxMatrix;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+import flixel.system.FlxAssets.FlxGraphicAsset;
+import flxanimate.data.AnimationData.OneOfTwo;
 import flxanimate.data.SpriteMapData.AnimateAtlas;
 import flxanimate.data.SpriteMapData.AnimateSpriteData;
+import flxanimate.data.SpriteMapData.Meta;
+import flxanimate.zip.Zip;
+import haxe.io.Bytes;
 import openfl.Assets;
 import openfl.display.BitmapData;
-import flixel.system.FlxAssets.FlxGraphicAsset;
 #if haxe4
 import haxe.xml.Access;
 #else
 import haxe.xml.Fast as Access;
 #end
-import flixel.graphics.frames.FlxFrame;
 
 class FlxAnimateFrames extends FlxAtlasFrames
 {
@@ -139,15 +136,16 @@ class FlxAnimateFrames extends FlxAtlasFrames
         }
         return frames;
     }
-    public function concat(frames:FlxFramesCollection)
+    override function concat(frames:FlxAtlasFrames, overwriteHash = false)
     {
-        if (parents.indexOf(frames.parent) != -1) return;
+        if (parents.indexOf(frames.parent) != -1) return this;
         parents.push(frames.parent);
         this.frames.concat(frames.frames);
-        for (key => frame in frames.framesHash.keyValueIterator())
+        for (key => frame in frames.framesByName.keyValueIterator())
         {
-            framesHash.set(key, frame);
+            framesByName.set(key, frame);
         }
+        return this;
     }
     /**
      * Sparrow spritesheet format parser with support of both of the versions and making the image completely optional to you.

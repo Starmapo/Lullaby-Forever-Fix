@@ -27,11 +27,11 @@
 	<SubTexture name="HypnoWeekConfirm0006" x="343" y="5" width="332" height="365" frameX="-1" frameY="-3" frameWidth="334" frameHeight="367"/>
 	<SubTexture name="HypnoWeekConfirm0007" x="1696" y="5" width="235" height="470" frameX="-47" frameY="-133" frameWidth="335" frameHeight="876"/>
 	<SubTexture name="HypnoWeekConfirm0008" x="5" y="480" width="145" height="366" frameX="-98" frameY="-510" frameWidth="335" frameHeight="876"/>
-	<SubTexture name="HypnoWeekConfirm0009" x="155" y="480" width="0" height="0" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
-	<SubTexture name="HypnoWeekConfirm0010" x="155" y="480" width="0" height="0" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
-	<SubTexture name="HypnoWeekConfirm0011" x="155" y="480" width="0" height="0" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
-	<SubTexture name="HypnoWeekConfirm0012" x="155" y="480" width="0" height="0" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
-	<SubTexture name="HypnoWeekConfirm0013" x="155" y="480" width="0" height="0" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
-	<SubTexture name="HypnoWeekConfirm0014" x="155" y="480" width="0" height="0" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
-	<SubTexture name="HypnoWeekConfirm0015" x="155" y="480" width="0" height="0" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
+	<SubTexture name="HypnoWeekConfirm0009" x="155" y="480" width="1" height="1" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
+	<SubTexture name="HypnoWeekConfirm0010" x="155" y="480" width="1" height="1" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
+	<SubTexture name="HypnoWeekConfirm0011" x="155" y="480" width="1" height="1" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
+	<SubTexture name="HypnoWeekConfirm0012" x="155" y="480" width="1" height="1" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
+	<SubTexture name="HypnoWeekConfirm0013" x="155" y="480" width="1" height="1" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
+	<SubTexture name="HypnoWeekConfirm0014" x="155" y="480" width="1" height="1" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
+	<SubTexture name="HypnoWeekConfirm0015" x="155" y="480" width="1" height="1" frameX="210" frameY="12" frameWidth="335" frameHeight="876"/>
 </TextureAtlas>

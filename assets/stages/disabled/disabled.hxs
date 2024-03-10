@@ -327,11 +327,9 @@ function onEvent(eventName) {
                         PlayState.ratingPosition.y += 256;
                         PlayState.ratingPosition.x -= 64;
 
-                        plateL.loadGraphic(Paths.image('Purple_place'));
                         plateL.setGraphicSize(Std.int(plateL.width / 1.75));
                         plateL.offset.y += 128;
 
-                        plateR.loadGraphic(Paths.image('Purple_place'));
                         plateR.setGraphicSize(Std.int(plateR.width));
                         plateR.offset.y += 96;
 

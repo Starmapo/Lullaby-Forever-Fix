@@ -5,31 +5,22 @@ import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.addons.display.FlxTiledSprite;
-import flixel.addons.effects.FlxTrail;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.FlxGraphic;
-import flixel.graphics.tile.FlxGraphicsShader;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.math.FlxRandom;
 import flixel.math.FlxRect;
-import flixel.system.FlxAssets.FlxShader;
-import flixel.system.FlxAssets.FlxSoundAsset;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.tweens.misc.ColorTween;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
-import flixel.util.FlxGradient;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import flxanimate.FlxAnimate;
@@ -47,28 +38,19 @@ import meta.data.Events;
 import meta.data.ScriptHandler;
 import meta.data.Song.SwagSong;
 import meta.data.dependency.Discord;
-import meta.data.dependency.FNFSprite;
 import meta.data.font.AttachedText;
 import meta.state.charting.*;
 import meta.state.menus.*;
 import meta.subState.*;
-import meta.subState.UnlockSubstate.Unlockable;
 import openfl.display.GraphicsShader;
-import openfl.display.Shader;
 import openfl.events.KeyboardEvent;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
-import openfl.media.Sound;
-import openfl.utils.Assets;
-import sys.io.File;
-import vlc.MP4Handler;
 
 using StringTools;
 
 #if sys
-import sys.FileSystem;
 #end
-
 enum abstract GameModes(String) to String
 {
 	var HELL_MODE;
@@ -664,7 +646,7 @@ class PlayState extends MusicBeatState
 				//
 				mxBlock = new FlxSprite();
 				mxBlock.frames = Paths.getSparrowAtlas('characters/mx/mxblock');
-				mxBlock.animation.addByPrefix('idle', 'blockIdle', 24, false);
+				mxBlock.animation.addByPrefix('idle', 'BlockIdle', 24, false);
 				mxBlock.antialiasing = true;
 				mxBlock.setPosition(mx.x, mx.y);
 				mxBlock.x -= 185;
@@ -736,7 +718,6 @@ class PlayState extends MusicBeatState
 			strumHUD[i] = new FlxCamera();
 			strumHUD[i].bgColor.alpha = 0;
 
-			strumHUD[i].cameras = [camHUD];
 			allUIs.push(strumHUD[i]);
 			FlxG.cameras.add(strumHUD[i], false);
 			// set this strumline's camera to the designated camera
@@ -1044,11 +1025,11 @@ class PlayState extends MusicBeatState
 
 				frostbiteTheromometerTyphlosion = new FlxSprite(1164 - 1134, 119);
 				frostbiteTheromometerTyphlosion.frames = Paths.getSparrowAtlas('UI/base/TyphlosionVit');
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage1', 'Typh1', 24, true);
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage2', 'Typh2', 24, true);
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage3', 'Typh3', 24, true);
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage4', 'Typh4', 24, true);
-				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage5', 'Typh5', 24, true);
+				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage1', 'Typh1 instance 1', 24, true);
+				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage2', 'Typh2 instance 1', 24, true);
+				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage3', 'Typh3 instance 1', 24, true);
+				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage4', 'Typh4 instance 1', 24, true);
+				frostbiteTheromometerTyphlosion.animation.addByPrefix('stage5', 'Typh5 instance 1', 24, true);
 				frostbiteTheromometerTyphlosion.animation.play('stage1');
 				frostbiteTheromometerTyphlosion.updateHitbox();
 				frostbiteTheromometerTyphlosion.antialiasing = true;
@@ -1453,7 +1434,7 @@ class PlayState extends MusicBeatState
 			missingnoGlitch = new GraphicsShader("", Paths.shader('glitch'));
 			shaderCatalog.push(new ShaderFilter(missingnoGlitch));
 			missingnoIndex = shaderCatalog.length - 1;
-			camGame.setFilters(shaderCatalog);
+			camGame.filters = shaderCatalog;
 			// */
 			glitchSet = true;
 		}
@@ -1468,7 +1449,7 @@ class PlayState extends MusicBeatState
 		if (!frostSet && Init.trueSettings.get('Shaders'))
 		{
 			frostbiteShader = new ShaderFilter(new GraphicsShader("", Paths.shader('snowfall')));
-			vignetteCam.setFilters([frostbiteShader]);
+			vignetteCam.filters = [frostbiteShader];
 			frostSet = true;
 		}
 	}
@@ -1534,7 +1515,7 @@ class PlayState extends MusicBeatState
 			brimstoneShader = new GraphicsShader("", Paths.shader('camEffects'));
 			shaderCatalog.push(new ShaderFilter(brimstoneShader));
 			brimstoneIndex = shaderCatalog.length - 1;
-			camGame.setFilters(shaderCatalog);
+			camGame.filters = shaderCatalog;
 			// */
 			brimstoneSet = true;
 		}
@@ -2294,7 +2275,7 @@ class PlayState extends MusicBeatState
 			for (hud in allUIs)
 				hud.angle = FlxMath.lerp(0 + forceZoom[3], hud.angle, easeLerp);
 
-			if (controls.RESET)
+			if (controls.RESET && !unowning)
 				health = 0;
 
 			if (health < minHealth)
@@ -2302,36 +2283,37 @@ class PlayState extends MusicBeatState
 			if (health <= minHealth && startedCountdown)
 				die();
 
-			/*if (Main.hypnoDebug)
+			if (Main.hypnoDebug)
+			{
+				if (FlxG.keys.justPressed.ONE)
 				{
-					if (FlxG.keys.justPressed.ONE) 
+					songMusic.volume = 0;
+					vocals.volume = 0;
+					doMoneyBag();
+				}
+
+				if (FlxG.keys.justPressed.TWO)
+				{
+					if (!usedTimeTravel && Conductor.songPosition + 10000 < songMusic.length)
+					{
+						usedTimeTravel = true;
+						songMusic.pause();
+						vocals.pause();
+						Conductor.songPosition += 10000;
+
+						// canDie = false;
+
+						songMusic.time = Conductor.songPosition;
+						songMusic.play();
+						vocals.time = Conductor.songPosition;
+						vocals.play();
+						new FlxTimer().start(0.5, function(tmr:FlxTimer)
 						{
-							songMusic.volume = 0;
-							vocals.volume = 0;
-							doMoneyBag();
-						}
-
-					if (FlxG.keys.justPressed.TWO) {
-						if (!usedTimeTravel && Conductor.songPosition + 10000 < songMusic.length)
-						{
-							usedTimeTravel = true;
-							songMusic.pause();
-							vocals.pause();
-							Conductor.songPosition += 10000;
-
-							canDie = false;
-
-							songMusic.time = Conductor.songPosition;
-							songMusic.play();
-							vocals.time = Conductor.songPosition;
-							vocals.play();
-							new FlxTimer().start(0.5, function(tmr:FlxTimer)
-							{
-								usedTimeTravel = false;
-							});
-						}
+							usedTimeTravel = false;
+						});
 					}
-			}*/
+				}
+			}
 
 			// copy paste im lazy
 			var pendulumOffset:Array<Int> = [];
@@ -3217,8 +3199,10 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			}
 
+			var animName = 'sing' + stringDirection.toUpperCase() + 'miss';
 			for (i in character)
-				i.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
+				if (i.animExists(animName))
+					i.playAnim(animName, lockMiss);
 		}
 
 		if (bronzongMechanic && direction == 4)
@@ -3254,8 +3238,11 @@ class PlayState extends MusicBeatState
 			}
 
 			stringArrow = baseString + altString;
-			character.playAnim(stringArrow, true);
-			character.holdTimer = 0;
+			if (character.animExists(stringArrow))
+			{
+				character.playAnim(stringArrow, true);
+				character.holdTimer = 0;
+			}
 		}
 		else
 		{
@@ -3435,10 +3422,7 @@ class PlayState extends MusicBeatState
 
 	public function createSplash(coolNote:Note, strumline:Strumline)
 	{
-		// play animation in existing notesplashes
-		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
-		if (strumline.splashNotes != null)
-			strumline.splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom, true);
+		strumline.createSplash(coolNote);
 	}
 
 	private var createdColor = FlxColor.fromRGB(204, 66, 66);
@@ -3604,7 +3588,7 @@ class PlayState extends MusicBeatState
 		}
 		else
 			rating.alpha = 0.0001; // uh hopefully this dont break ig
-		
+
 		switch (daRating)
 		{
 			case 'good':
@@ -4019,6 +4003,9 @@ class PlayState extends MusicBeatState
 
 			if (curSong == 'Lost-Cause' && isStoryMode)
 			{
+				// unlock freeplay lol
+				UnlockSubstate.queueNewUnlock('freeplay');
+
 				Main.switchState(this, new CartridgeGuyState());
 				return;
 			}
@@ -4067,13 +4054,6 @@ class PlayState extends MusicBeatState
 			if (SONG.validScore)
 				Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 			FlxG.save.flush();
-
-			switch (storyWeek)
-			{
-				case 0:
-					// unlock freeplay lol
-					UnlockSubstate.queueNewUnlock('freeplay');
-			}
 
 			Main.switchState(this, new StoryMenuState());
 		}

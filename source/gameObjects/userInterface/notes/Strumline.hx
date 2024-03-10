@@ -122,7 +122,8 @@ class UIStaticArrow extends FlxSprite
 	}
 }
 
-class Strumline extends FlxSpriteGroup {
+class Strumline extends FlxSpriteGroup
+{
 	//
 	public var receptors:FlxTypedSpriteGroup<UIStaticArrow>;
 	public var splashNotes:FlxTypedSpriteGroup<NoteSplash>;
@@ -142,6 +143,7 @@ class Strumline extends FlxSpriteGroup {
 	public var noteSplashes:Bool;
 
 	public var noteWidth:Float = Note.swagWidth;
+
 	public function new(positionX:Float = 0, playState:PlayState, ?character:Array<Character>, ?displayJudgements:Bool = true, ?autoplay:Bool = true,
 			?noteSplashes:Bool = false, ?keyAmount:Int = 4, ?downscroll:Bool = false, ?parent:Strumline)
 	{
@@ -167,25 +169,28 @@ class Strumline extends FlxSpriteGroup {
 		regenerateStrums();
 	}
 
-	public function regenerateStrums() {
-		receptors.forEachAlive(function(strum:UIStaticArrow){
+	public function regenerateStrums()
+	{
+		receptors.forEachAlive(function(strum:UIStaticArrow)
+		{
 			strum.destroy();
 		});
 		receptors.clear();
 		//
-		splashNotes.forEachAlive(function(strum:NoteSplash) {
+		splashNotes.forEachAlive(function(strum:NoteSplash)
+		{
 			strum.destroy();
 		});
 		splashNotes.clear();
 		//
 		for (i in 0...keyAmount)
 		{
-			var staticArrow:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + xPos, 25 + (downscroll ? FlxG.height - 200 : 0), i,
-				PlayState.assetModifier);
+			var staticArrow:UIStaticArrow = ForeverAssets.generateUIArrows(-25 + xPos, 25 + (downscroll ? FlxG.height - 200 : 0), i, PlayState.assetModifier);
 			staticArrow.ID = i;
 
 			noteWidth = Note.swagWidth;
-			if (PlayState.buriedNotes) {
+			if (PlayState.buriedNotes)
+			{
 				trace('what');
 				noteWidth = (32 * (PlayState.daPixelZoom * PlayState.buriedResize));
 				if (downscroll)
@@ -203,18 +208,21 @@ class Strumline extends FlxSpriteGroup {
 			staticArrow.angleTo = 0;
 			staticArrow.playAnim('static');
 
-			if (!PlayState.buriedNotes) {
+			if (!PlayState.buriedNotes)
+			{
 				staticArrow.y -= 10;
 				staticArrow.alpha = 0;
 				FlxTween.tween(staticArrow, {y: staticArrow.initialY, alpha: staticArrow.defaultAlpha}, 1,
 					{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
-			else {
+			else
+			{
 				staticArrow.defaultAlpha = 1;
 				staticArrow.alpha = staticArrow.defaultAlpha;
 			}
 
-			if (noteSplashes) {
+			if (noteSplashes && i < 4)
+			{
 				var noteSplash:NoteSplash = ForeverAssets.generateNoteSplashes('noteSplashes', PlayState.assetModifier, PlayState.changeableSkin, 'UI', i);
 				splashNotes.add(noteSplash);
 			}
@@ -225,12 +233,14 @@ class Strumline extends FlxSpriteGroup {
 			var lastReceptor = receptors.members[receptors.members.length - 1];
 			lastReceptor.x = (xPos - lastReceptor.width / 2) + noteWidth / 2;
 			//
-			if (Init.trueSettings.get('Centered Notefield')) {
+			if (Init.trueSettings.get('Centered Notefield'))
+			{
 				lastReceptor.screenCenter(X);
 				lastReceptor.x -= 64;
 			}
 			//
-			for (i in receptors) {
+			for (i in receptors)
+			{
 				switch (i.ID)
 				{
 					case 0:
@@ -257,13 +267,19 @@ class Strumline extends FlxSpriteGroup {
 			add(splashNotes);
 	}
 
-	public function createSplash(coolNote:Note) {
+	public function createSplash(coolNote:Note)
+	{
 		// play animation in existing notesplashes
-		var noteSplashRandom:String = (Std.string((FlxG.random.int(0, 1) + 1)));
-		splashNotes.members[coolNote.noteData].playAnim('anim' + noteSplashRandom);
+		if (splashNotes != null)
+		{
+			var strum = splashNotes.members[coolNote.noteData];
+			if (strum != null)
+				strum.playAnim('anim' + Std.string(FlxG.random.int(0, 1) + 1), true);
+		}
 	}
 
-	public function push(newNote:Note) {
+	public function push(newNote:Note)
+	{
 		var chosenGroup = (newNote.isSustainNote ? holdsGroup : notesGroup);
 		chosenGroup.add(newNote);
 		allNotes.add(newNote);

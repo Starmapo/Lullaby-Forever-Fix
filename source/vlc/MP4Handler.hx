@@ -1,7 +1,7 @@
 package vlc;
 
-import openfl.events.Event;
 import flixel.FlxG;
+import openfl.events.Event;
 import vlc.bitmap.VlcBitmap;
 
 /**

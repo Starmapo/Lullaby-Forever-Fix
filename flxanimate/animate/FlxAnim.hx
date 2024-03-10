@@ -7,7 +7,7 @@ import flixel.util.FlxStringUtil;
 import flxanimate.data.AnimationData;
 import openfl.geom.ColorTransform;
 #if FLX_SOUND_SYSTEM
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 #end
 
 typedef SymbolStuff =

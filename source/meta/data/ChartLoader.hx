@@ -1,17 +1,12 @@
 package meta.data;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.math.FlxMath;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
 import gameObjects.userInterface.notes.*;
 import meta.data.Events;
 import meta.data.ScriptHandler.ForeverModule;
 import meta.data.Section.SwagSection;
 import meta.data.Song.SwagSong;
 import meta.state.PlayState;
-import meta.state.charting.ChartingState;
 
 /**
 	This is the chartloader class. it loads in charts, but also exports charts, the chart parameters are based on the type of chart, 
@@ -44,37 +39,34 @@ class ChartLoader
 						switch (songNotes[1])
 						{
 							default:
-								if (songNotes[1] == 8)
+								if (PlayState.bronzongMechanic && songNotes[1] == 8)
 								{
-									if (PlayState.bronzongMechanic)
+									var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, 4, 2, 0);
+									swagNote.noteSpeed = songData.speed;
+
+									swagNote.lane = PlayState.playerLane;
+									swagNote.sustainLength = songNotes[2];
+									swagNote.scrollFactor.set(0, 0);
+
+									var susLength:Float = swagNote.sustainLength;
+									susLength = susLength / Conductor.stepCrochet;
+									unspawnNotes.push(swagNote);
+
+									var oldNote:Note;
+									if (unspawnNotes.length > 0)
+										oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
+									else
+										oldNote = null;
+
+									for (susNote in 0...Math.floor(susLength))
 									{
-										var swagNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier, daStrumTime, 4, 2, 0);
-										swagNote.noteSpeed = songData.speed;
+										oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
+										var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
+											daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, 4, 2, 0, true, oldNote);
+										sustainNote.scrollFactor.set();
+										sustainNote.lane = swagNote.lane;
 
-										swagNote.lane = PlayState.playerLane;
-										swagNote.sustainLength = songNotes[2];
-										swagNote.scrollFactor.set(0, 0);
-
-										var susLength:Float = swagNote.sustainLength;
-										susLength = susLength / Conductor.stepCrochet;
-										unspawnNotes.push(swagNote);
-
-										var oldNote:Note;
-										if (unspawnNotes.length > 0)
-											oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-										else
-											oldNote = null;
-
-										for (susNote in 0...Math.floor(susLength))
-										{
-											oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-											var sustainNote:Note = ForeverAssets.generateArrow(PlayState.assetModifier,
-												daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, 4, 2, 0, true, oldNote);
-											sustainNote.scrollFactor.set();
-											sustainNote.lane = swagNote.lane;
-
-											unspawnNotes.push(sustainNote);
-										}
+										unspawnNotes.push(sustainNote);
 									}
 								}
 								else

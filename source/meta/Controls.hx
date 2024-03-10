@@ -1,24 +1,12 @@
 package meta;
 
 import flixel.FlxG;
-import flixel.FlxG;
-import flixel.input.FlxInput;
 import flixel.input.FlxInput;
 import flixel.input.actions.FlxAction;
-import flixel.input.actions.FlxAction;
 import flixel.input.actions.FlxActionInput;
-import flixel.input.actions.FlxActionInput;
-import flixel.input.actions.FlxActionInputDigital;
-import flixel.input.actions.FlxActionInputDigital;
-import flixel.input.actions.FlxActionManager;
 import flixel.input.actions.FlxActionManager;
 import flixel.input.actions.FlxActionSet;
-import flixel.input.actions.FlxActionSet;
-import flixel.input.gamepad.FlxGamepadButton;
-import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
-import flixel.input.gamepad.FlxGamepadInputID;
-import flixel.input.keyboard.FlxKey;
 import flixel.input.keyboard.FlxKey;
 
 enum abstract Action(String) to String from String
@@ -550,7 +538,7 @@ class Controls extends FlxActionSet
 	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
 	 * If binder is a literal you can inline this
 	 */
-	public function bindKeys(control:Control, keys:Array<FlxKey>)
+	public function bindKeys(control:Control, keys:Array<Null<FlxKey>>)
 	{
 		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, state) -> addKeys(action, keys, state));
@@ -572,10 +560,11 @@ class Controls extends FlxActionSet
 		#end
 	}
 
-	inline static function addKeys(action:FlxActionDigital, keys:Array<FlxKey>, state:FlxInputState)
+	inline static function addKeys(action:FlxActionDigital, keys:Array<Null<FlxKey>>, state:FlxInputState)
 	{
 		for (key in keys)
-			action.addKey(key, state);
+			if (key != null)
+				action.addKey(key, state);
 	}
 
 	static function removeKeys(action:FlxActionDigital, keys:Array<FlxKey>)

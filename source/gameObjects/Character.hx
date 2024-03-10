@@ -4,28 +4,24 @@ package gameObjects;
 	The character class initialises any and all characters that exist within gameplay. For now, the character class will
 	stay the same as it was in the original source of the game. I'll most likely make some changes afterwards though!
 **/
-import flixel.FlxG;
-import flixel.addons.util.FlxSimplex;
-import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxPoint;
-import flixel.util.FlxTimer;
+// import flixel.util.typeLimit.OneOfThree;
 import flxanimate.FlxAnimate;
-import gameObjects.userInterface.HealthIcon;
-import meta.*;
 import meta.data.*;
 import meta.data.dependency.FNFSprite;
 import meta.state.PlayState;
-import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
-// import flixel.util.typeLimit.OneOfThree;
 
-enum Direction {
+enum Direction
+{
 	LEFT;
 	RIGHT;
 }
-typedef CharacterData = {
+
+typedef CharacterData =
+{
 	var offsetX:Float;
 	var offsetY:Float;
 	var camOffsetX:Float;
@@ -35,6 +31,7 @@ typedef CharacterData = {
 	var zoomOffset:Float;
 	var healthbarColors:Array<Int>;
 }
+
 class Character extends FNFSprite
 {
 	public var debugMode:Bool = false;
@@ -55,12 +52,14 @@ class Character extends FNFSprite
 
 	public var forceNoMiss:Bool = false;
 
-	public function new(?isPlayer:Bool = false) {
+	public function new(?isPlayer:Bool = false)
+	{
 		super(x, y);
 		this.isPlayer = isPlayer;
 	}
 
 	public var wigglyState:Int = 0;
+
 	public function setCharacter(x:Float, y:Float, character:String):Character
 	{
 		curCharacter = character;
@@ -69,7 +68,7 @@ class Character extends FNFSprite
 
 		characterData = {
 			offsetY: 0,
-			offsetX: 0, 
+			offsetX: 0,
 			camOffsetY: 0,
 			camOffsetX: 0,
 			quickDancer: false,
@@ -93,7 +92,7 @@ class Character extends FNFSprite
 				animation.addByPrefix('idle', 'gf_idle_not_hypno_2s instance 1', 24, false);
 				animation.addByPrefix('idle-alt1', 'gf_idle_ok_maybe_shes_hypno_2s instance 1', 24, false);
 				animation.addByPrefix('idle-alt2', 'gf_idle_ok_shes_hypno_2s instance 1', 24, false);
-				
+
 				animation.addByPrefix('singUP', 'gf_up instance 1', 24, false);
 				animation.addByPrefix('singLEFT', 'gf_left_alt instance 1', 24, false);
 				animation.addByPrefix('singRIGHT', 'gf_right_better instance 1', 24, false);
@@ -123,10 +122,11 @@ class Character extends FNFSprite
 				characterData.camOffsetX = 50;
 				characterData.camOffsetY = 50;
 				characterData.zoomOffset = 0.05;
-			
+
 			case 'gf-stand' | 'gf-kneel' | 'gf-stand-death':
 				atlasCharacter = new FlxAnimate(x, y, Paths.getPath('images/characters/atlases/phase_3', TEXT));
-				switch (curCharacter) {
+				switch (curCharacter)
+				{
 					case 'gf-kneel':
 						atlasCharacter.anim.addByAnimIndices('idle', indicesContinueAmount(14), 24);
 						atlasCharacter.anim.addByAnimIndices('singLEFT', indicesContinueAmount(4), 24);
@@ -173,7 +173,7 @@ class Character extends FNFSprite
 
 						characterData.offsetX = -150;
 						characterData.offsetY = 210;
-						//characterData.camOffsetX = 300;
+						// characterData.camOffsetX = 300;
 						characterData.camOffsetY = 50;
 				}
 
@@ -183,120 +183,120 @@ class Character extends FNFSprite
 				visible = false;
 				playAnim('idle');
 			/*
-			case 'gf-stand':
-				
-				tex = Paths.getSparrowAtlas('characters/gf/last_stand', true);
-				frames = tex;
+				case 'gf-stand':
+					
+					tex = Paths.getSparrowAtlas('characters/gf/last_stand', true);
+					frames = tex;
 
-				animation.addByPrefix('idle', 'Lullaby_GF_Idle_2', 24, false);
-				animation.addByPrefix('singUP', 'Lullaby_GF_up0', 24, false);
-				animation.addByPrefix('singRIGHT', 'Lullaby_GF_right0', 24, false);
-				animation.addByPrefix('singDOWN', 'Lullaby_GF_down0', 24, false);
-				animation.addByPrefix('singLEFT', 'Lullaby_GF_left0', 24, false);
-				animation.addByPrefix('singUPmiss', 'Lullaby_GF_up_miss', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'Lullaby_GF_right_miss', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'Lullaby_GF_down_miss', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'Lullaby_GF_left_miss', 24, false);
+					animation.addByPrefix('idle', 'Lullaby_GF_Idle_2', 24, false);
+					animation.addByPrefix('singUP', 'Lullaby_GF_up0', 24, false);
+					animation.addByPrefix('singRIGHT', 'Lullaby_GF_right0', 24, false);
+					animation.addByPrefix('singDOWN', 'Lullaby_GF_down0', 24, false);
+					animation.addByPrefix('singLEFT', 'Lullaby_GF_left0', 24, false);
+					animation.addByPrefix('singUPmiss', 'Lullaby_GF_up_miss', 24, false);
+					animation.addByPrefix('singRIGHTmiss', 'Lullaby_GF_right_miss', 24, false);
+					animation.addByPrefix('singDOWNmiss', 'Lullaby_GF_down_miss', 24, false);
+					animation.addByPrefix('singLEFTmiss', 'Lullaby_GF_left_miss', 24, false);
 
-				addOffset("idle");
-				addOffset("singUP", -3, 12);
-				addOffset("singLEFT", 4, -5);
-				addOffset("singRIGHT", 2, 1);
-				addOffset("singDOWN", -7, -17);
-				addOffset("singUPmiss", -3, 12);
-				addOffset("singLEFTmiss", 4, -5);
-				addOffset("singRIGHTmiss", 2, 1);
-				addOffset("singDOWNmiss", -7, -17);
+					addOffset("idle");
+					addOffset("singUP", -3, 12);
+					addOffset("singLEFT", 4, -5);
+					addOffset("singRIGHT", 2, 1);
+					addOffset("singDOWN", -7, -17);
+					addOffset("singUPmiss", -3, 12);
+					addOffset("singLEFTmiss", 4, -5);
+					addOffset("singRIGHTmiss", 2, 1);
+					addOffset("singDOWNmiss", -7, -17);
 
-				playAnim('idle');
+					playAnim('idle');
 
-				setGraphicSize(Std.int(width * 1.44));
-				// lmao
-				for (i in animOffsets)
-				{
-					i[0] *= scale.x;
-					i[1] *= scale.y;
-				}
+					setGraphicSize(Std.int(width * 1.44));
+					// lmao
+					for (i in animOffsets)
+					{
+						i[0] *= scale.x;
+						i[1] *= scale.y;
+					}
 
-				characterData.healthbarColors = [165, 0, 77];
-				characterData.offsetX = 150;
-				characterData.offsetY = 75;
-				characterData.camOffsetX = -300;
-				characterData.camOffsetY = -50;
-				characterData.facingDirection = RIGHT;
+					characterData.healthbarColors = [165, 0, 77];
+					characterData.offsetX = 150;
+					characterData.offsetY = 75;
+					characterData.camOffsetX = -300;
+					characterData.camOffsetY = -50;
+					characterData.facingDirection = RIGHT;
 
-			case 'gf-stand-death':
-				tex = Paths.getSparrowAtlas('characters/death/gf/gameover', true);
-				frames = tex;
+				case 'gf-stand-death':
+					tex = Paths.getSparrowAtlas('characters/death/gf/gameover', true);
+					frames = tex;
 
-				animation.addByPrefix('firstDeath', 'firstDeath', 24, false);
-				animation.addByPrefix('deathLoop', 'loop', 24, true);
-				animation.addByPrefix('deathConfirm', 'confirm', 24, false);
+					animation.addByPrefix('firstDeath', 'firstDeath', 24, false);
+					animation.addByPrefix('deathLoop', 'loop', 24, true);
+					animation.addByPrefix('deathConfirm', 'confirm', 24, false);
 
-				addOffset('firstDeath', 33, 11);
-				addOffset('deathLoop', -160, 9);
-				addOffset('deathConfirm', 26, 406);
+					addOffset('firstDeath', 33, 11);
+					addOffset('deathLoop', -160, 9);
+					addOffset('deathConfirm', 26, 406);
 
-				playAnim('firstDeath');
+					playAnim('firstDeath');
 
-				setGraphicSize(Std.int(width * 0.8));
-				// lmao
-				for (i in animOffsets)
-				{
-					i[0] *= scale.x;
-					i[1] *= scale.y;
-				}
+					setGraphicSize(Std.int(width * 0.8));
+					// lmao
+					for (i in animOffsets)
+					{
+						i[0] *= scale.x;
+						i[1] *= scale.y;
+					}
 
-				characterData.offsetX = -150;
-				characterData.offsetY = 210;
-				//characterData.camOffsetX = 300;
-				characterData.camOffsetY = 50;
+					characterData.offsetX = -150;
+					characterData.offsetY = 210;
+					//characterData.camOffsetX = 300;
+					characterData.camOffsetY = 50;
 
-			case 'gf-kneel':
+				case 'gf-kneel':
 
-				tex = Paths.getSparrowAtlas('characters/gf/phase_3', true);
-				frames = tex;
+					tex = Paths.getSparrowAtlas('characters/gf/phase_3', true);
+					frames = tex;
 
-				// typic I hope you actually burn in hell
-				animation.addByPrefix('idle', 'GF_SHAKING_BF_she_is_like_real_hot_tho_because_she_is_lullaby_girlfriend', 24, false);
-				animation.addByPrefix('singUP', 'up_GF_SHAKING_BF_she_is_like_real_hot_tho_because0', 24, false);
-				animation.addByPrefix('singRIGHT', 'right_GF_SHAKING_BF_she_is_like_real_hot_tho_because0', 24, false);
-				animation.addByPrefix('singDOWN', 'down_GF_SHAKING_BF_she_is_like_real_hot_tho_because0', 24, false);
-				animation.addByPrefix('singLEFT', 'left_GF_SHAKING_BF_she_is_like_real_hot_tho_because0', 24, false);
-				animation.addByPrefix('singUPmiss', 'up_GF_SHAKING_BF_she_is_like_real_hot_tho_because_miss', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'right_GF_SHAKING_BF_she_is_like_real_hot_tho_because_miss', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'down_GF_SHAKING_BF_she_is_like_real_hot_tho_because_miss', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'left_GF_SHAKING_BF_she_is_like_real_hot_tho_because_miss', 24, false);
+					// typic I hope you actually burn in hell
+					animation.addByPrefix('idle', 'GF_SHAKING_BF_she_is_like_real_hot_tho_because_she_is_lullaby_girlfriend', 24, false);
+					animation.addByPrefix('singUP', 'up_GF_SHAKING_BF_she_is_like_real_hot_tho_because0', 24, false);
+					animation.addByPrefix('singRIGHT', 'right_GF_SHAKING_BF_she_is_like_real_hot_tho_because0', 24, false);
+					animation.addByPrefix('singDOWN', 'down_GF_SHAKING_BF_she_is_like_real_hot_tho_because0', 24, false);
+					animation.addByPrefix('singLEFT', 'left_GF_SHAKING_BF_she_is_like_real_hot_tho_because0', 24, false);
+					animation.addByPrefix('singUPmiss', 'up_GF_SHAKING_BF_she_is_like_real_hot_tho_because_miss', 24, false);
+					animation.addByPrefix('singRIGHTmiss', 'right_GF_SHAKING_BF_she_is_like_real_hot_tho_because_miss', 24, false);
+					animation.addByPrefix('singDOWNmiss', 'down_GF_SHAKING_BF_she_is_like_real_hot_tho_because_miss', 24, false);
+					animation.addByPrefix('singLEFTmiss', 'left_GF_SHAKING_BF_she_is_like_real_hot_tho_because_miss', 24, false);
 
-				animation.addByPrefix('bfdrop', 'GF_SHAKING_BF_drop', 24, false);
-				
-				addOffset("idle");
-				addOffset("bfdrop", 27, 93);
-				addOffset("singUP", -2, 22);
-				addOffset("singLEFT", 42, -4);
-				addOffset("singRIGHT", -18, 0);
-				addOffset("singDOWN", -2, -10);
-				addOffset("singUPmiss", -1, 22);
-				addOffset("singLEFTmiss", 29, 7);
-				addOffset("singRIGHTmiss", -21, 0);
-				addOffset("singDOWNmiss", -2, -9);
+					animation.addByPrefix('bfdrop', 'GF_SHAKING_BF_drop', 24, false);
+					
+					addOffset("idle");
+					addOffset("bfdrop", 27, 93);
+					addOffset("singUP", -2, 22);
+					addOffset("singLEFT", 42, -4);
+					addOffset("singRIGHT", -18, 0);
+					addOffset("singDOWN", -2, -10);
+					addOffset("singUPmiss", -1, 22);
+					addOffset("singLEFTmiss", 29, 7);
+					addOffset("singRIGHTmiss", -21, 0);
+					addOffset("singDOWNmiss", -2, -9);
 
-				playAnim('idle');
+					playAnim('idle');
 
-				setGraphicSize(Std.int(width * 1));
-				// lmao
-				for (i in animOffsets)
-				{
-					i[0] *= scale.x;
-					i[1] *= scale.y;
-				}
+					setGraphicSize(Std.int(width * 1));
+					// lmao
+					for (i in animOffsets)
+					{
+						i[0] *= scale.x;
+						i[1] *= scale.y;
+					}
 
-				characterData.healthbarColors = [165, 0, 77];
-				characterData.offsetX = 200;
-				characterData.offsetY = 100;
-				characterData.facingDirection = RIGHT;
-				characterData.zoomOffset = 0.15;
-			*/
+					characterData.healthbarColors = [165, 0, 77];
+					characterData.offsetX = 200;
+					characterData.offsetY = 100;
+					characterData.facingDirection = RIGHT;
+					characterData.zoomOffset = 0.15;
+			 */
 
 			case 'abomination-hypno':
 				frames = Paths.getSparrowAtlas('characters/hypno/ABOMINATION_HYPNO');
@@ -304,7 +304,7 @@ class Character extends FNFSprite
 				animation.addByPrefix('singUP', 'up', 24, false);
 				animation.addByPrefix('singRIGHT', 'right', 24, false);
 				animation.addByPrefix('singDOWN', 'down', 24, false);
-				animation.addByPrefix('singLEFT', 'left', 24, false);
+				animation.addByPrefix('singLEFT', 'left instance 1', 24, false);
 
 				addOffset("idle");
 				addOffset("singUP", -5, 181);
@@ -469,18 +469,18 @@ class Character extends FNFSprite
 
 				visible = false;
 				playAnim('idle');
-				
+
 			case 'bf-pixel':
 				frames = Paths.getSparrowAtlas('characters/bf/bfPixel');
-				animation.addByPrefix('idle', 'BF IDLE', 24, false);
-				animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'BF LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'BF DOWN NOTE', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF DOWN MISS', 24, false);
+				animation.addByPrefix('idle', 'BF IDLE instance 1', 24, false);
+				animation.addByPrefix('singUP', 'BF UP NOTE instance 1', 24, false);
+				animation.addByPrefix('singLEFT', 'BF LEFT NOTE instance 1', 24, false);
+				animation.addByPrefix('singRIGHT', 'BF RIGHT NOTE instance 1', 24, false);
+				animation.addByPrefix('singDOWN', 'BF DOWN NOTE instance 1', 24, false);
+				animation.addByPrefix('singUPmiss', 'BF UP MISS instance 1', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'BF LEFT MISS instance 1', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'BF RIGHT MISS instance 1', 24, false);
+				animation.addByPrefix('singDOWNmiss', 'BF DOWN MISS instance 1', 24, false);
 
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
@@ -502,8 +502,8 @@ class Character extends FNFSprite
 			case 'ba-bf':
 				frames = Paths.getSparrowAtlas('characters/bf/ba_BF_assets');
 				animation.addByPrefix('idle', 'BF_Idle', 24, false);
-				animation.addByIndices('throw', 'BF_Ball_Throw', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], '', 24, false);
-				animation.addByIndices('throw2', 'BF_Ball_Throw', [17,18,19,20,21,22,23,24], '', 24, false);
+				animation.addByIndices('throw', 'BF_Ball_Throw', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], '', 24, false);
+				animation.addByIndices('throw2', 'BF_Ball_Throw', [17, 18, 19, 20, 21, 22, 23, 24], '', 24, false);
 				animation.addByPrefix('augh', 'BF_AURGH', 24, false);
 				animation.addByPrefix('singUP', 'BF_Up0', 24, false);
 				animation.addByPrefix('singLEFT', 'BF_Left0', 24, false);
@@ -529,7 +529,9 @@ class Character extends FNFSprite
 				animation.addByPrefix('idle', 'Ball_Idle_Normal', 24, false);
 				animation.addByPrefix('break1', 'Ball_Idle_Break01', 24, false);
 				animation.addByPrefix('break2', 'Ball_Idle_Break02', 24, false);
-				animation.addByIndices('burst1', 'Ball_FinalBurst', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], "", 24, false);
+				animation.addByIndices('burst1', 'Ball_FinalBurst', [
+					0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35
+				], "", 24, false);
 				animation.addByIndices('burst2', 'Ball_FinalBurst', [36, 37, 38, 39, 40, 41, 42, 43, 44], "", 24, false);
 				animation.addByPrefix('full-break1', 'Ball_Break01', 24, false);
 				animation.addByPrefix('full-break2', 'Ball_Break02', 24, false);
@@ -538,7 +540,7 @@ class Character extends FNFSprite
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 				antialiasing = false;
-			
+
 			case 'bf-pixel-dead':
 				frames = Paths.getSparrowAtlas('characters/death/BF_Death_Missingno');
 				animation.addByPrefix('firstDeath', "bf_misngno_death", 24, false);
@@ -555,7 +557,7 @@ class Character extends FNFSprite
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 				antialiasing = false;
-				
+
 				characterData.offsetY = 150;
 				characterData.camOffsetY = 240;
 				characterData.facingDirection = LEFT;
@@ -574,7 +576,7 @@ class Character extends FNFSprite
 				addOffset('singDOWN', 10, 0);
 				addOffset('singUP', 1, -2);
 
-				playAnim('idle');
+				playAnim('danceLeft');
 
 				// pixel bullshit
 				setGraphicSize(Std.int(width * 7));
@@ -586,7 +588,7 @@ class Character extends FNFSprite
 				characterData.healthbarColors = [128, 112, 152];
 				characterData.facingDirection = RIGHT;
 				characterData.zoomOffset = -0.15;
-				// alpha = 0;
+			// alpha = 0;
 			case 'ba-missingno':
 				frames = Paths.getSparrowAtlas('characters/buried/ba_missingno_assets');
 				animation.addByIndices('danceLeft', 'BA_Missingno_Idle', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], "", 24, false);
@@ -600,8 +602,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singLEFTmiss', 'BA_Missingno_Left Miss', 24, false);
 				animation.addByPrefix('singRIGHTmiss', 'BA_Missingno_Right Miss', 24, false);
 				animation.addByPrefix('singDOWNmiss', 'BA_Missingno_Down Miss', 24, false);
-				
-				playAnim('idle');
+
+				playAnim('danceLeft');
 
 				// pixel bullshit
 				setGraphicSize(Std.int(width * 6));
@@ -612,7 +614,7 @@ class Character extends FNFSprite
 				characterData.offsetY = 500;
 				characterData.camOffsetX = 600;
 				characterData.camOffsetY = -400;
-			case 'muk': 
+			case 'muk':
 				frames = Paths.getSparrowAtlas('characters/buried/leanmonster');
 				animation.addByPrefix('idle', 'Muk_Idle', 24, false);
 				animation.addByPrefix('intro', 'Muk_Intro', 24, false);
@@ -713,13 +715,13 @@ class Character extends FNFSprite
 				characterData.offsetX = -250;
 				// characterData.camOffsetX = 100;
 				characterData.healthbarColors = [255, 55, 55];
-				
+
 			case 'typhlosion':
 				frames = Paths.getSparrowAtlas('characters/gold/TYPHLOSION_MECHANIC');
 				animation.addByIndices('idle', 'TYPHLOSION MECHANIC', generateIndicesAtPoint(1, 15), "", 24, false);
 				animation.addByIndices('fire', 'TYPHLOSION MECHANIC', generateIndicesAtPoint(16, 14), "", 24, false);
 				playAnim('idle');
-				
+
 				characterData.facingDirection = RIGHT;
 
 			case 'freakachu':
@@ -728,7 +730,7 @@ class Character extends FNFSprite
 				animation.addByPrefix('painsplit', 'Freakachu PAIN SPLIT', 24, false);
 				playAnim('idle');
 				addOffset("painsplit", -5, 28);
-				
+
 			case 'cold-gold':
 				frames = Paths.getSparrowAtlas('characters/gold/Cold_Gold');
 
@@ -758,7 +760,7 @@ class Character extends FNFSprite
 				characterData.camOffsetY = -160;
 				characterData.healthbarColors = [234, 216, 255];
 
-				characterData.facingDirection = RIGHT; 
+				characterData.facingDirection = RIGHT;
 
 			case 'buryman':
 				frames = Paths.getSparrowAtlas('characters/buried/buryman_assets');
@@ -771,8 +773,10 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWN', 'buryman_down', 24, false);
 				animation.addByPrefix('singLEFT', 'buryman_left', 24, false);
 
-				animation.finishCallback = function(name:String){
-					if (name == 'laugh') {
+				animation.finishCallback = function(name:String)
+				{
+					if (name == 'laugh')
+					{
 						canAnimate = true;
 						dance();
 					}
@@ -786,7 +790,7 @@ class Character extends FNFSprite
 				antialiasing = false;
 
 				characterData.camOffsetX = -1430;
-				
+
 				// characterData.camOffsetY = -100;
 				characterData.facingDirection = LEFT; // flip this later
 			case 'buryman-death':
@@ -794,7 +798,7 @@ class Character extends FNFSprite
 				animation.addByPrefix('idle', 'buried_death', 24, false);
 				animation.addByPrefix('retry', 'BA_retry0', 24, true);
 				animation.addByPrefix('accept', 'BA_retry_confirm', 24, false);
-				
+
 				addOffset('accept', 24, 24);
 
 				playAnim('idle');
@@ -880,7 +884,7 @@ class Character extends FNFSprite
 				updateHitbox();
 
 				playAnim('idle');
-				
+
 				characterData.camOffsetX = 0;
 				characterData.offsetX = 150;
 				characterData.offsetY = 600;
@@ -974,19 +978,20 @@ class Character extends FNFSprite
 				characterData.camOffsetX = -characterData.offsetX * 2;
 				characterData.camOffsetY = -characterData.offsetY;
 
-			case 'wigglytuff': 
+			case 'wigglytuff':
 				var phaseString:String = curCharacter;
-				switch (wigglyState) {
+				switch (wigglyState)
+				{
 					default:
 						phaseString = 'wigglytuff';
 						characterData.zoomOffset = -0.20;
 						characterData.healthbarColors = [163, 103, 117];
 					case 1:
-						phaseString = 'DECAY 1'; 
+						phaseString = 'DECAY 1';
 						characterData.zoomOffset = -0.125;
 						characterData.healthbarColors = [123, 74, 86];
 					case 2:
-						phaseString = 'DECAY 2'; 
+						phaseString = 'DECAY 2';
 						characterData.zoomOffset = -0.05;
 						characterData.healthbarColors = [99, 56, 67];
 					case 3:
@@ -997,14 +1002,15 @@ class Character extends FNFSprite
 				characterData.camOffsetY = (192 * (1 / (1 - (characterData.zoomOffset + 0.15)))) - 192;
 
 				frames = Paths.getSparrowAtlas('characters/disabled/wiggles_glitchy');
-				
+
 				animation.addByPrefix('idle', '$phaseString idle', 24, false);
 				animation.addByPrefix('singUP', '$phaseString up', 24, false);
 				animation.addByPrefix('singLEFT', '$phaseString left', 24, false);
 				animation.addByPrefix('singRIGHT', '$phaseString right', 24, false);
 				animation.addByPrefix('singDOWN', '$phaseString down', 24, false);
-				
-				switch (phaseString.toLowerCase()) {
+
+				switch (phaseString.toLowerCase())
+				{
 					case 'wigglytuff':
 						var idleOffset:FlxPoint = FlxPoint.weak(0, 0);
 						addOffset('idle', idleOffset.x, idleOffset.y);
@@ -1038,12 +1044,13 @@ class Character extends FNFSprite
 				setGraphicSize(Std.int(width * 1.25));
 				updateHitbox();
 
-				for (i in animOffsets) {
+				for (i in animOffsets)
+				{
 					i[0] *= scale.x;
 					i[1] *= scale.y;
 				}
 
-				playAnim('$phaseString idle');
+				playAnim('idle');
 
 				characterData.facingDirection = RIGHT;
 
@@ -1073,10 +1080,10 @@ class Character extends FNFSprite
 				addOffset("singDOWNmiss", -24, -41);
 
 				characterData.facingDirection = RIGHT;
-			
+
 			case 'wiggles-death-stare':
 				frames = Paths.getSparrowAtlas('characters/disabled/The_death_stare');
-		
+
 				animation.addByPrefix('idle', 'idle', 24, false);
 				animation.addByPrefix('singUP', 'up', 24, false);
 				animation.addByPrefix('singLEFT', 'left', 24, false);
@@ -1108,7 +1115,7 @@ class Character extends FNFSprite
 				frames = Paths.getSparrowAtlas('characters/gf-gameboy', 'gf');
 				animation.addByPrefix('idle', 'Lmao', 24, true);
 				playAnim('idle');
-				
+
 				// setGraphicSize(Std.int(width * 6));
 				// updateHitbox();
 				antialiasing = true;
@@ -1142,7 +1149,7 @@ class Character extends FNFSprite
 				addOffset('idle');
 				addOffset('singRIGHT', -153, 10);
 				addOffset('singDOWN', -66, -19);
-				addOffset('singLEFT', 76, 20);		
+				addOffset('singLEFT', 76, 20);
 				addOffset('singUP', -73, 57);
 				playAnim('idle');
 
@@ -1150,7 +1157,7 @@ class Character extends FNFSprite
 				characterData.facingDirection = LEFT;
 				characterData.zoomOffset = 0.175;
 				characterData.healthbarColors = [185, 49, 43];
-			
+
 			case 'glitchy-bf':
 				frames = Paths.getSparrowAtlas('characters/bf/Boyfriend_Isotope');
 				animation.addByPrefix('idle', 'Bf Idle Dance', 24, false);
@@ -1217,15 +1224,15 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHTmiss', 'GGirl Right Miss', 24, false);
 				animation.addByPrefix('singDOWNmiss', 'GGirl Down Miss', 24, false);
 
-				addOffset('idle', -5,0);
-				addOffset("singUP", -29,27);
-				addOffset("singRIGHT", -27,28);
-				addOffset("singLEFT", 62,5);
-				addOffset("singDOWN", 25,-15);
+				addOffset('idle', -5, 0);
+				addOffset("singUP", -29, 27);
+				addOffset("singRIGHT", -27, 28);
+				addOffset("singLEFT", 62, 5);
+				addOffset("singDOWN", 25, -15);
 				addOffset("singUPmiss", 50, 143);
-				addOffset("singRIGHTmiss", -30,22);
-				addOffset("singLEFTmiss", 72,28);
-				addOffset("singDOWNmiss", 23,28);
+				addOffset("singRIGHTmiss", -30, 22);
+				addOffset("singLEFTmiss", 72, 28);
+				addOffset("singDOWNmiss", 23, 28);
 
 				playAnim('idle');
 
@@ -1272,7 +1279,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHTmiss', 'PONYTA SCARED RIGHT MISS0', 24, false);
 				animation.addByPrefix('singDOWNmiss', 'PONYTA SCARED DOWN MISS0', 24, false);
 
-				animation.finishCallback = function(name:String){
+				animation.finishCallback = function(name:String)
+				{
 					if (name == 'toScared')
 						dance();
 				}
@@ -1325,7 +1333,8 @@ class Character extends FNFSprite
 
 				playAnim('idle');
 
-				for (i in animOffsets) {
+				for (i in animOffsets)
+				{
 					i[0] *= scale.x;
 					i[1] *= scale.y;
 				}
@@ -1355,7 +1364,8 @@ class Character extends FNFSprite
 				characterData.healthbarColors = [150, 150, 150];
 
 				setGraphicSize(Std.int(width * 0.5));
-				for (i in animOffsets) {
+				for (i in animOffsets)
+				{
 					i[0] *= scale.x;
 					i[1] *= scale.y;
 				}
@@ -1367,7 +1377,7 @@ class Character extends FNFSprite
 				characterData.zoomOffset = 0.15;
 
 				playAnim('idle');
-				
+
 			case 'jigglyfront':
 				frames = Paths.getSparrowAtlas('characters/purin/Purin_Recolored');
 				animation.addByPrefix('idle', 'Body', 24, false);
@@ -1385,7 +1395,8 @@ class Character extends FNFSprite
 				characterData.healthbarColors = [150, 150, 150];
 
 				setGraphicSize(Std.int(width * 0.5));
-				for (i in animOffsets) {
+				for (i in animOffsets)
+				{
 					i[0] *= scale.x;
 					i[1] *= scale.y;
 				}
@@ -1444,7 +1455,8 @@ class Character extends FNFSprite
 				setGraphicSize(Std.int(width * 0.9));
 				updateHitbox();
 				// lmao
-				for (i in animOffsets) {
+				for (i in animOffsets)
+				{
 					i[0] *= scale.x;
 					i[1] *= scale.y;
 				}
@@ -1453,21 +1465,24 @@ class Character extends FNFSprite
 			case 'hypno-cards' | 'hypno-cards-front':
 				frames = Paths.getSparrowAtlas('characters/hypno/PASTA_HYPNO');
 				var modifier:String = '';
-				if (curCharacter.contains('front')) 
+				if (curCharacter.contains('front'))
 					modifier = ' Front';
 				animation.addByPrefix('idle', 'Hypno Idle${modifier}0', 24, false);
 				animation.addByPrefix('singUP', 'Hypno Up${modifier}0', 24, false);
 				animation.addByPrefix('singRIGHT', 'Hypno Right${modifier}0', 24, false);
 				animation.addByPrefix('singDOWN', 'Hypno Down${modifier}0', 24, false);
 				animation.addByPrefix('singLEFT', 'Hypno Left${modifier}0', 24, false);
-				if (curCharacter.contains('front')) {
+				if (curCharacter.contains('front'))
+				{
 					addOffset("idle", -64, -172);
 					addOffset("singUP", 37, 299);
 					addOffset("singRIGHT", -141, -104);
 					addOffset("singLEFT", 34, 73);
 					addOffset("singDOWN", -139, -160);
-				} else {
-					addOffset("singUP", -172 , 137);
+				}
+				else
+				{
+					addOffset("singUP", -172, 137);
 					addOffset("singRIGHT", -151, 70);
 					addOffset("singLEFT", -126, 22);
 					addOffset("singDOWN", -60, -66);
@@ -1478,15 +1493,15 @@ class Character extends FNFSprite
 				playAnim('idle');
 				setGraphicSize(Std.int(width * 1.5));
 				updateHitbox();
-				// lmao
-				/*
+			// lmao
+			/*
 				for (i in animOffsets)
 				{
 					i[0] *= scale.x;
 					i[1] *= scale.y;
 				}
-				*/
-				
+			 */
+
 			case 'lord-x':
 				frames = Paths.getSparrowAtlas('characters/GAMBLE_X');
 				animation.addByPrefix('idle', 'X IDLE', 24, false);
@@ -1520,7 +1535,7 @@ class Character extends FNFSprite
 				updateHitbox();
 				antialiasing = false;
 
-			case 'shinto': 
+			case 'shinto':
 				frames = Paths.getSparrowAtlas('characters/shinto/shitno_assets');
 				animation.addByPrefix('idle', 'shitno_idle', 24);
 				animation.addByPrefix('singUP', 'shitno_up', 24);
@@ -1550,7 +1565,7 @@ class Character extends FNFSprite
 				antialiasing = false;
 				characterData.healthbarColors = [247, 223, 111];
 
-			case 'shitno': 
+			case 'shitno':
 				frames = Paths.getSparrowAtlas('characters/shinto/shitno');
 				animation.addByPrefix('idle', 'Idle', 24);
 				animation.addByPrefix('singUP', 'Up', 24);
@@ -1570,9 +1585,9 @@ class Character extends FNFSprite
 
 				characterData.healthbarColors = [207, 159, 0];
 
-			case 'grey-cold': 
+			case 'grey-cold':
 				frames = Paths.getSparrowAtlas('characters/shinto/Grey_Assets');
-				animation.addByPrefix('idle', 'GreyCold_Idle', 24, false); 
+				animation.addByPrefix('idle', 'GreyCold_Idle', 24, false);
 				animation.addByPrefix('singUP', 'GreyCold_Up', 24, false);
 				animation.addByPrefix('singRIGHT', 'GreyCold_Right', 24, false);
 				animation.addByPrefix('singDOWN', 'GreyCold_Down', 24, false);
@@ -1581,8 +1596,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHTmiss', 'GreyCold_Miss_Right', 24, false);
 				animation.addByPrefix('singUPmiss', 'GreyCold_Miss_Up', 24, false);
 				animation.addByPrefix('singDOWNmiss', 'GreyCold_Miss_Down', 24, false);
-				animation.addByPrefix('talk', 'GreyCold_Talk', 24, false); 
-				animation.addByPrefix('turn', 'GreyCold_Turn', 24, false); 
+				animation.addByPrefix('talk', 'GreyCold_Talk', 24, false);
+				animation.addByPrefix('turn', 'GreyCold_Turn', 24, false);
 				playAnim('idle');
 
 				characterData.facingDirection = LEFT;
@@ -1592,9 +1607,9 @@ class Character extends FNFSprite
 				updateHitbox();
 				antialiasing = false;
 
-			case 'grey': 
+			case 'grey':
 				frames = Paths.getSparrowAtlas('characters/shinto/Grey_Assets');
-				animation.addByPrefix('idle', 'Grey_Idle', 24, false); 
+				animation.addByPrefix('idle', 'Grey_Idle', 24, false);
 				animation.addByPrefix('singUP', 'Grey_Up', 24, false);
 				animation.addByPrefix('singRIGHT', 'Grey_Left', 24, false);
 				animation.addByPrefix('singDOWN', 'Grey_Down', 24, false);
@@ -1697,11 +1712,10 @@ class Character extends FNFSprite
 
 				characterData.facingDirection = LEFT;
 				characterData.healthbarColors = [179, 0, 0];
-				
+
 				characterData.camOffsetX = -125;
 				characterData.camOffsetY = -250;
 				characterData.zoomOffset = 0.00;
-
 
 			case 'mike-bed':
 				atlasCharacter = new FlxAnimate(x, y, Paths.getPath('images/characters/atlases/mikebed', TEXT));
@@ -1760,9 +1774,9 @@ class Character extends FNFSprite
 				addOffset('deathConfirm', 37, 71);
 
 				playAnim('firstDeath');
-				
-				//characterData.offsetY = 450;
-				//characterData.camOffsetX = 0;
+
+				// characterData.offsetY = 450;
+				// characterData.camOffsetX = 0;
 				characterData.camOffsetY = 0;
 				characterData.facingDirection = LEFT;
 
@@ -1795,7 +1809,7 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWN', 'hypno sdan down', 24);
 				animation.addByPrefix('singLEFT', 'hypno sdan left', 24);
 				characterData.facingDirection = RIGHT;
-				playAnim('idle');
+				playAnim('danceLeft');
 				// pixel bullshit
 				setGraphicSize(Std.int(width * 4));
 				updateHitbox();
@@ -1816,13 +1830,13 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHT', 'missingo_right', 24, false);
 				animation.addByPrefix('singDOWN', 'missingo_down', 24, false);
 				dance();
-				
+
 				// setGraphicSize(Std.int(width * 6));
 				// updateHitbox();
 
 				characterData.facingDirection = RIGHT;
 				characterData.offsetY = -32;
-				
+
 				antialiasing = true;
 			case 'minecrftbf':
 				frames = Paths.getSparrowAtlas('characters/bf_but_in_minecrftno', 'shitpost');
@@ -1833,7 +1847,7 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWN', 'lolbf_down', 24, false);
 				characterData.facingDirection = LEFT;
 				playAnim('idle');
-				
+
 				// setGraphicSize(Std.int(width * 6));
 				// updateHitbox();
 				antialiasing = true;
@@ -1841,7 +1855,7 @@ class Character extends FNFSprite
 				frames = Paths.getSparrowAtlas('characters/gf_but_in_minecrftno', 'shitpost');
 				animation.addByPrefix('idle', 'lolgf', 24, true);
 				playAnim('idle');
-				
+
 				// setGraphicSize(Std.int(width * 6));
 				// updateHitbox();
 				antialiasing = true;
@@ -1856,11 +1870,11 @@ class Character extends FNFSprite
 		dance();
 
 		// fuck you ninjamuffin lmao
-		if ((isPlayer && characterData.facingDirection != LEFT) 
-		|| (!isPlayer && characterData.facingDirection != RIGHT))
+		if ((isPlayer && characterData.facingDirection != LEFT) || (!isPlayer && characterData.facingDirection != RIGHT))
 			flipLeftRight();
 
-		if (adjustPos) {
+		if (adjustPos)
+		{
 			x += characterData.offsetX;
 			trace('character ${curCharacter} scale ${scale.y}');
 			y += (characterData.offsetY - (frameHeight * scale.y));
@@ -1870,27 +1884,31 @@ class Character extends FNFSprite
 		this.y = y;
 
 		// /*
-		if (atlasCharacter != null) 
+		if (atlasCharacter != null)
 			atlasCharacter.setPosition(this.x, this.y);
 		// */
 		return this;
 	}
 
-	public static function generateIndicesAtPoint(point:Int, amount:Int):Array<Int> {
+	public static function generateIndicesAtPoint(point:Int, amount:Int):Array<Int>
+	{
 		var returnArray:Array<Int> = [];
-		for (i in 0...amount) 
+		for (i in 0...amount)
 			returnArray.push((point - 1) + i);
 		return returnArray;
 	}
 
 	public var currentIndex:Int = 1;
-	public function indicesContinueAmount(amount:Int):Array<Int> {
+
+	public function indicesContinueAmount(amount:Int):Array<Int>
+	{
 		var theArray:Array<Int> = generateIndicesAtPoint(currentIndex, amount);
 		currentIndex += amount;
 		return theArray;
 	}
 
-	public function resizeOffsets() {
+	public function resizeOffsets()
+	{
 		for (i in animOffsets.keys())
 			animOffsets[i] = [animOffsets[i][0] * scale.x, animOffsets[i][1] * scale.y];
 	}
@@ -1899,17 +1917,18 @@ class Character extends FNFSprite
 	{
 		// flip sprites in pairs
 		var animations:Array<Array<String>> = [['singLEFT', 'singRIGHT'], ['singLEFTmiss', 'singRIGHTmiss']];
-		for (pair in animations) {
+		for (pair in animations)
+		{
 			// should always be in groups of two
-			if (animation.getByName(pair[0]) != null 
-			 && animation.getByName(pair[1]) != null) {
+			if (animation.getByName(pair[0]) != null && animation.getByName(pair[1]) != null)
+			{
 				var firstAnim = animation.getByName(pair[0]).frames;
 				var secondAnim = animation.getByName(pair[1]).frames;
 				animation.getByName(pair[0]).frames = secondAnim;
-				animation.getByName(pair[1]).frames = firstAnim;	
+				animation.getByName(pair[1]).frames = firstAnim;
 
-				if (animOffsets.exists(pair[0]) 
-				 && animOffsets.exists(pair[1])) {
+				if (animOffsets.exists(pair[0]) && animOffsets.exists(pair[1]))
+				{
 					var firstAnimOffset = animOffsets[pair[0]];
 					var secondAnimOffset = animOffsets[pair[1]];
 					animOffsets[pair[0]] = firstAnimOffset;
@@ -1923,57 +1942,64 @@ class Character extends FNFSprite
 	}
 
 	public function flipUpDown():Void
+	{
+		// flip sprites in pairs
+		var animations:Array<Array<String>> = [['singUP', 'singDOWN'], ['singUPmiss', 'singDOWNmiss']];
+		for (pair in animations)
 		{
-			// flip sprites in pairs
-			var animations:Array<Array<String>> = [['singUP', 'singDOWN'], ['singUPmiss', 'singDOWNmiss']];
-			for (pair in animations) {
-				// should always be in groups of two
-				if (animation.getByName(pair[0]) != null 
-				 && animation.getByName(pair[1]) != null) {
-					var firstAnim = animation.getByName(pair[0]).frames;
-					var secondAnim = animation.getByName(pair[1]).frames;
-					animation.getByName(pair[0]).frames = secondAnim;
-					animation.getByName(pair[1]).frames = firstAnim;	
-	
-					if (animOffsets.exists(pair[0]) 
-					 && animOffsets.exists(pair[1])) {
-						var firstAnimOffset = animOffsets[pair[0]];
-						var secondAnimOffset = animOffsets[pair[1]];
-						animOffsets[pair[0]] = firstAnimOffset;
-						animOffsets[pair[1]] = secondAnimOffset;
-					}
+			// should always be in groups of two
+			if (animation.getByName(pair[0]) != null && animation.getByName(pair[1]) != null)
+			{
+				var firstAnim = animation.getByName(pair[0]).frames;
+				var secondAnim = animation.getByName(pair[1]).frames;
+				animation.getByName(pair[0]).frames = secondAnim;
+				animation.getByName(pair[1]).frames = firstAnim;
+
+				if (animOffsets.exists(pair[0]) && animOffsets.exists(pair[1]))
+				{
+					var firstAnimOffset = animOffsets[pair[0]];
+					var secondAnimOffset = animOffsets[pair[1]];
+					animOffsets[pair[0]] = firstAnimOffset;
+					animOffsets[pair[1]] = secondAnimOffset;
 				}
 			}
-	
-			// flip
-			flipX = !flipX;
 		}
+
+		// flip
+		flipX = !flipX;
+	}
 
 	override function update(elapsed:Float)
 	{
 		if (!isPlayer)
 		{
 			// /*
-			if (atlasCharacter != null) {
+			if (atlasCharacter != null)
+			{
 				if (atlasAnimation.startsWith('sing'))
 					holdTimer += elapsed;
-			} else {
+			}
+			else
+			{
 				if (animation.curAnim.name.startsWith('sing'))
 					holdTimer += elapsed;
 			}
-			
+
 			var dadVar:Float = 4;
-			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001) {
+			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
+			{
 				dance();
 				holdTimer = 0;
 			}
 		}
 
-		if (isPressing) {
+		if (isPressing)
+		{
 			coverEars(true);
 			uncoverCooldown = (8 * (Conductor.stepCrochet / 1000));
 		}
-		else {
+		else
+		{
 			uncoverCooldown -= elapsed;
 			if (uncoverCooldown <= 0)
 				coverEars(false);
@@ -1995,9 +2021,12 @@ class Character extends FNFSprite
 			{
 				default:
 					// Left/right dancing, think Skid & Pump
-					if (atlasCharacter != null) {
+					if (atlasCharacter != null)
+					{
 						playAnim('idle', forced);
-					} else {
+					}
+					else
+					{
 						if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null)
 						{
 							danced = !danced;
@@ -2010,10 +2039,9 @@ class Character extends FNFSprite
 						{
 							playAnim('idle' + idleSuffix, forced);
 						}
-						else
+						else if (animation.getByName('idle') != null)
 							playAnim('idle', forced);
 					}
-
 			}
 		}
 	}
@@ -2022,8 +2050,10 @@ class Character extends FNFSprite
 	public var isPressing:Bool = false;
 	public var uncoverCooldown:Float;
 
-	public function coverEars(?yaCover:Bool = false) {
-		if (isCovering != yaCover && !hasTransformed) {
+	public function coverEars(?yaCover:Bool = false)
+	{
+		if (isCovering != yaCover && !hasTransformed)
+		{
 			canAnimate = false;
 			var modifier = '';
 			if (curCharacter == 'dawn-bf')
@@ -2033,7 +2063,8 @@ class Character extends FNFSprite
 			isCovering = yaCover;
 			atlasCharacter.anim.onComplete = function()
 			{
-				if (atlasAnimation.contains('transition') && !canAnimate) {
+				if (atlasAnimation.contains('transition') && !canAnimate)
+				{
 					canAnimate = true;
 					dance();
 				}
@@ -2051,7 +2082,8 @@ class Character extends FNFSprite
 			hasTransformed = true;
 			atlasCharacter.anim.onComplete = function()
 			{
-				if (atlasAnimation.contains('transform') && !canAnimate) {
+				if (atlasAnimation.contains('transform') && !canAnimate)
+				{
 					canAnimate = true;
 					dance();
 				}
@@ -2061,24 +2093,31 @@ class Character extends FNFSprite
 
 	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		if (!canAnimate || (atlasAnimation.contains('transition')
-			&& ((!atlasCharacter.anim.reversed && atlasCharacter.anim.curFrame < 3)
-			|| (atlasCharacter.anim.reversed && atlasCharacter.anim.curFrame > 2)))) {
+		if (!canAnimate
+			|| (atlasAnimation.contains('transition')
+				&& ((!atlasCharacter.anim.reversed && atlasCharacter.anim.curFrame < 3)
+					|| (atlasCharacter.anim.reversed && atlasCharacter.anim.curFrame > 2))))
+		{
 			return;
-		} else canAnimate = true;
+		}
+		else
+			canAnimate = true;
 
 		var modifier = '';
-		if (isCovering && !hasTransformed)
+		if (isCovering && !hasTransformed && animExists(AnimName + '-cover'))
 			modifier += '-cover';
 		if (hasTransformed)
 			modifier += '-transformed';
 		if (curCharacter == 'dawn-bf')
 			modifier += '-boyfriend';
 
-		if (atlasCharacter != null) {
+		if (atlasCharacter != null)
+		{
 			atlasCharacter.anim.play(AnimName + modifier, Force, Reversed, Frame);
 			atlasAnimation = AnimName;
-		} else {
+		}
+		else
+		{
 			animation.play(AnimName, Force, Reversed, Frame);
 			var daOffset = animOffsets.get(AnimName);
 			if (animOffsets.exists(AnimName))
@@ -2095,5 +2134,13 @@ class Character extends FNFSprite
 		if (base.contains('-'))
 			base = base.substring(0, base.indexOf('-'));
 		return base;
+	}
+
+	public function animExists(name:String):Bool
+	{
+		if (atlasCharacter != null)
+			return atlasCharacter.anim.getByName(name) != null;
+		else
+			return animation.exists(name);
 	}
 }

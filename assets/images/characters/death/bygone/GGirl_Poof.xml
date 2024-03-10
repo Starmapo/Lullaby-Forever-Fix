@@ -8,9 +8,9 @@
 	<SubTexture name="GGirlPoof0003" x="313" y="0" width="238" height="240" frameX="-55" frameY="0" frameWidth="361" frameHeight="267"/>
 	<SubTexture name="GGirlPoof0004" x="551" y="0" width="333" height="187" frameX="0" frameY="-80" frameWidth="361" frameHeight="267"/>
 	<SubTexture name="GGirlPoof0005" x="0" y="240" width="237" height="81" frameX="-124" frameY="-124" frameWidth="361" frameHeight="267"/>
-	<SubTexture name="GGirlPoof0006" x="237" y="240" width="0" height="0" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
-	<SubTexture name="GGirlPoof0007" x="237" y="240" width="0" height="0" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
-	<SubTexture name="GGirlPoof0008" x="237" y="240" width="0" height="0" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
-	<SubTexture name="GGirlPoof0009" x="237" y="240" width="0" height="0" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
-	<SubTexture name="GGirlPoof0010" x="237" y="240" width="0" height="0" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
+	<SubTexture name="GGirlPoof0006" x="237" y="240" width="1" height="1" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
+	<SubTexture name="GGirlPoof0007" x="237" y="240" width="1" height="1" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
+	<SubTexture name="GGirlPoof0008" x="237" y="240" width="1" height="1" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
+	<SubTexture name="GGirlPoof0009" x="237" y="240" width="1" height="1" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
+	<SubTexture name="GGirlPoof0010" x="237" y="240" width="1" height="1" frameX="1186" frameY="154" frameWidth="361" frameHeight="267"/>
 </TextureAtlas>

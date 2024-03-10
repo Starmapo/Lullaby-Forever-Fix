@@ -3,7 +3,7 @@ package meta.subState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import gameObjects.userInterface.menu.Textbox;
@@ -86,6 +86,13 @@ class PauseSubState extends MusicBeatSubState
 		pausePortraitRight.alpha = 0;
 		if (PlayState.instance.pausePortraitRevealed[1] == false)
 			pausePortraitRight.color = FlxColor.BLACK;
+
+		switch (PlayState.SONG.song.toLowerCase())
+		{
+			case 'missingno', 'brimstone', 'shinto', 'shitno': // no antialiasing for pixel portraits
+			default:
+				pausePortraitLeft.antialiasing = pausePortraitRight.antialiasing = true;
+		}
 
 		mainTextbox = new Textbox(x, y);
 		mainTextbox.scrollFactor.set();

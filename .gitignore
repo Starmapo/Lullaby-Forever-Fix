@@ -12,3 +12,4 @@ export/*
 !.vscode/launch.json
 !.vscode/extensions.json
 oxipng.exe
+.haxelib/

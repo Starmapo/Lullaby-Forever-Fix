@@ -1,7 +1,5 @@
 package meta.state.menus;
 
-import haxe.Json;
-import sys.io.File;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -10,10 +8,12 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import haxe.Json;
 import meta.MusicBeat;
 import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
 import sys.FileSystem;
+import sys.io.File;
 
 using StringTools;
 typedef Credits = {
@@ -189,7 +189,6 @@ frostbite,shitno,monochrome,stranged red and isotope,missingno and a few other s
         sprite.screenCenter();
         sprite.cameras = [camGame];
         sprite.y += 16;
-        camHUD.cameras = [camGame];
 
         camHUD.x = FlxG.width / 2 - camHUD.width / 2;
 		camHUD.y = (FlxG.height / 2 - camHUD.height / 2) - 64;
@@ -197,7 +196,7 @@ frostbite,shitno,monochrome,stranged red and isotope,missingno and a few other s
 		if (Init.trueSettings.get('Shaders')) {
 			chromaticAberration = new ShaderFilter(new GraphicsShader("", Paths.shader('monitor')));
 			// chromaticAberration.shader.data.effectTime.value = [aberrateTimeValue];
-			camHUD.setFilters([chromaticAberration]);
+			camHUD.filters = [chromaticAberration];
 		}
 
 		// camHUD

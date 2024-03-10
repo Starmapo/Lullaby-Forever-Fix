@@ -42,5 +42,5 @@
 	<SubTexture name="Heavens Gate0037" x="1521" y="585" width="343" height="509" frameX="-40" frameY="-42" frameWidth="425" frameHeight="585"/>
 	<SubTexture name="Heavens Gate0038" x="0" y="1170" width="344" height="421" frameX="-38" frameY="-87" frameWidth="425" frameHeight="585"/>
 	<SubTexture name="Heavens Gate0039" x="0" y="0" width="343" height="314" frameX="-37" frameY="-136" frameWidth="425" frameHeight="585"/>
-	<SubTexture name="Heavens Gate0040" x="344" y="1170" width="0" height="0" frameX="995" frameY="-207" frameWidth="425" frameHeight="585"/>
+	<SubTexture name="Heavens Gate0040" x="344" y="1170" width="1" height="1" frameX="995" frameY="-207" frameWidth="425" frameHeight="585"/>
 </TextureAtlas>

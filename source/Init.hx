@@ -1,25 +1,15 @@
 import flixel.FlxG;
 import flixel.FlxState;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.graphics.FlxGraphic;
 import flixel.input.keyboard.FlxKey;
 import lime._internal.backend.native.NativeCFFI;
-import meta.CoolUtil;
 import meta.InfoHud;
 import meta.data.Highscore;
-import meta.data.dependency.Discord;
 import meta.state.*;
-import meta.state.charting.*;
-import meta.state.menus.PreloadState;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ColorMatrixFilter;
-import openfl.net.SharedObject;
-import openfl.system.System;
-import overworld.OverworldStage;
-import sys.FileSystem;
-import sys.io.File;
 
 using StringTools;
+
 
 /** 
 	Enumerator for settingtypes
@@ -349,8 +339,10 @@ class Init extends FlxState
 
 		if (FlxG.save.data != null)
 		{
-			FlxG.sound.muted = FlxG.save.data.mute;
-			FlxG.sound.volume = FlxG.save.data.volume;
+			if (FlxG.save.data.mute != null)
+				FlxG.sound.muted = FlxG.save.data.mute;
+			if (FlxG.save.data.volume != null)
+				FlxG.sound.volume = FlxG.save.data.volume;
 		}
 
 		// lemme fix that for you
